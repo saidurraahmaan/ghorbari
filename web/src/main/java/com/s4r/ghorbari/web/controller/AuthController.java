@@ -5,6 +5,8 @@ import com.s4r.ghorbari.core.service.IUserService;
 import com.s4r.ghorbari.web.dto.JwtResponse;
 import com.s4r.ghorbari.web.dto.LoginRequest;
 import com.s4r.ghorbari.web.dto.RegisterRequest;
+import com.s4r.ghorbari.web.exception.ErrorResponse;
+import com.s4r.ghorbari.web.exception.UnauthorizedException;
 import com.s4r.ghorbari.web.security.IJwtUtils;
 import com.s4r.ghorbari.web.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,7 +54,8 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login successful",
                     content = @Content(schema = @Schema(implementation = JwtResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+            @ApiResponse(responseCode = "401", description = "Invalid credentials",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -93,27 +96,22 @@ public class AuthController {
     @Operation(summary = "Register new user", description = "Create a new user account for a tenant")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User registered successfully"),
-            @ApiResponse(responseCode = "400", description = "Email already in use")
+            @ApiResponse(responseCode = "400", description = "Validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "409", description = "Email already in use",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        try {
-            userService.registerUser(
-                    registerRequest.getUsername(),
-                    registerRequest.getEmail(),
-                    passwordEncoder.encode(registerRequest.getPassword()),
-                    registerRequest.getTenantId()
-            );
+    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+        userService.registerUser(
+                registerRequest.getUsername(),
+                registerRequest.getEmail(),
+                passwordEncoder.encode(registerRequest.getPassword()),
+                registerRequest.getTenantId()
+        );
 
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("User registered successfully!");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body("Error: " + e.getMessage());
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error: " + e.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("User registered successfully!");
     }
 
     @Operation(summary = "Get current user", description = "Get currently authenticated user information",
@@ -121,10 +119,11 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User information retrieved",
                     content = @Content(schema = @Schema(implementation = JwtResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @ApiResponse(responseCode = "401", description = "Not authenticated",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser() {
+    public ResponseEntity<JwtResponse> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl) {
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -142,6 +141,6 @@ public class AuthController {
                     roles
             ));
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
+        throw new UnauthorizedException("Not authenticated");
     }
 }

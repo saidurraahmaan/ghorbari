@@ -3,6 +3,8 @@ package com.s4r.ghorbari.core.service;
 import com.s4r.ghorbari.core.context.TenantContext;
 import com.s4r.ghorbari.core.entity.Role;
 import com.s4r.ghorbari.core.entity.User;
+import com.s4r.ghorbari.core.exception.ErrorCode;
+import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.RoleRepository;
 import com.s4r.ghorbari.core.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,7 @@ public class UserService implements IUserService {
 
         try {
             if (userRepository.existsByEmailAndTenantId(email, tenantId)) {
-                throw new IllegalArgumentException("Email is already in use for this tenant");
+                throw new ServiceException(ErrorCode.USER_ALREADY_EXISTS, email);
             }
 
             User user = new User(username, email, encodedPassword);
@@ -39,7 +41,7 @@ public class UserService implements IUserService {
             // Assign default role
             Set<Role> roles = new HashSet<>();
             Role userRole = roleRepository.findByName(Role.RoleName.ROLE_RESIDENT)
-                    .orElseThrow(() -> new RuntimeException("Default role ROLE_RESIDENT not found. Please seed roles first."));
+                    .orElseThrow(() -> new ServiceException(ErrorCode.DEFAULT_ROLE_NOT_FOUND, "ROLE_RESIDENT"));
             roles.add(userRole);
             user.setRoles(roles);
 
