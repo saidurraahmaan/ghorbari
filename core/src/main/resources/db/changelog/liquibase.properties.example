@@ -1,0 +1,12 @@
+# Liquibase Configuration Template
+# Copy this file to liquibase.properties and update with your local database settings
+# liquibase.properties is git-ignored and won't be committed
+#
+# Note: All other Liquibase settings (driver, changeLogFile, referenceUrl, etc.)
+#       are configured in pom.xml and don't need to be specified here.
+
+# Database Connection - Update these values for your local environment
+url=jdbc:postgresql://localhost:YOUR_PORT/YOUR_DATABASE_NAME
+username=YOUR_USERNAME
+password=YOUR_PASSWORD
+author=YOUR_NAME

@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="saidur (generated)" id="1766778363672-1">
+    <changeSet author="saidur" id="1766780915489-1">
         <createTable tableName="apartments">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="apartmentsPK"/>
@@ -33,7 +33,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-2">
+    <changeSet author="saidur" id="1766780915489-2">
         <createTable tableName="residents">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="residentsPK"/>
@@ -63,7 +63,7 @@
             <column name="apartment_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-3">
+    <changeSet author="saidur" id="1766780915489-3">
         <createTable tableName="roles">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rolesPK"/>
@@ -78,7 +78,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-4">
+    <changeSet author="saidur" id="1766780915489-4">
         <createTable tableName="tenants">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="tenantsPK"/>
@@ -99,7 +99,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-5">
+    <changeSet author="saidur" id="1766780915489-5">
         <createTable tableName="user_roles">
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_rolesPK"/>
@@ -109,7 +109,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-6">
+    <changeSet author="saidur" id="1766780915489-6">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
@@ -135,25 +135,25 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-7">
+    <changeSet author="saidur" id="1766780915489-7">
         <addUniqueConstraint columnNames="email" constraintName="UC_RESIDENTSEMAIL_COL" tableName="residents"/>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-8">
+    <changeSet author="saidur" id="1766780915489-8">
         <addUniqueConstraint columnNames="name" constraintName="UC_ROLESNAME_COL" tableName="roles"/>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-9">
+    <changeSet author="saidur" id="1766780915489-9">
         <addUniqueConstraint columnNames="tenant_key" constraintName="UC_TENANTSTENANT_KEY_COL" tableName="tenants"/>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-10">
+    <changeSet author="saidur" id="1766780915489-10">
         <addUniqueConstraint columnNames="email, tenant_id" constraintName="UKdms6tsnbugy9927cn4kwci01a" tableName="users"/>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-11">
+    <changeSet author="saidur" id="1766780915489-11">
         <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="residents" constraintName="FKgq3b1iv87p9nhnpvw6yrbwj14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-12">
+    <changeSet author="saidur" id="1766780915489-12">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles" constraintName="FKh8ciramu9cc9q3qcqiv4ue8a6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
     </changeSet>
-    <changeSet author="saidur (generated)" id="1766778363672-13">
+    <changeSet author="saidur" id="1766780915489-13">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="FKhfh9dx7w3ubf1co1vdev94g3f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
 </databaseChangeLog>

@@ -64,19 +64,17 @@
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>5.0.1</version>
 				<configuration>
-					<changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
-					<outputChangeLogFile>src/main/resources/db/changelog/generated-changelog.xml</outputChangeLogFile>
-					<diffChangeLogFile>src/main/resources/db/changelog/changes/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-					<driver>org.postgresql.Driver</driver>
-					<url>jdbc:postgresql://localhost:5423/ghor_bari</url>
-					<defaultSchemaName />
-					<username>postgres</username>
-					<password>postgres</password>
-					<referenceUrl>hibernate:spring:com.s4r.ghorbari.core.entity?dialect=org.hibernate.dialect.PostgreSQLDialect
-						&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-						&amp;hibernate.implicit_naming_strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-					</referenceUrl>
-					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+					<!-- Load configuration from external properties file -->
+                    <propertyFile>src/main/resources/db/changelog/liquibase.properties</propertyFile>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
+                    <outputChangeLogFile>src/main/resources/db/changelog/generated-changelog.xml</outputChangeLogFile>
+                    <diffChangeLogFile>src/main/resources/db/changelog/changes/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <driver>org.postgresql.Driver</driver>
+                    <referenceUrl>hibernate:spring:com.s4r.ghorbari.core.entity?dialect=org.hibernate.dialect.PostgreSQLDialect
+                        &amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+                        &amp;hibernate.implicit_naming_strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+                    </referenceUrl>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
 				</configuration>
 				<dependencies>
 					<dependency>

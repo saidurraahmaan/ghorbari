@@ -1,0 +1,41 @@
+# Development Environment Configuration Template
+# Copy this file to application-dev.yaml and update with your local settings
+# application-dev.yaml is git-ignored and won't be committed
+#
+# IMPORTANT: Update the following values for your local environment:
+# - Database connection (url, username, password)
+# - JWT secret (generate a new one for local development)
+# - Server URL and port (if different from default)
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:YOUR_PORT/YOUR_DATABASE_NAME
+    username: YOUR_USERNAME
+    password: YOUR_PASSWORD
+
+  jpa:
+    hibernate:
+      ddl-auto: none  # Liquibase manages schema, Hibernate only validates
+    show-sql: true        # Show SQL queries in console
+    properties:
+      hibernate:
+        format_sql: true  # Format SQL for readability
+
+  security:
+    user:
+      name: admin
+      password: admin
+
+# JWT Configuration for Development
+# IMPORTANT: Generate your own secret key for local development
+# Use: openssl rand -base64 64
+jwt:
+  secret: YOUR_JWT_SECRET_HERE_BASE64_ENCODED
+  expiration: 86400000  # 24 hours
+
+# Swagger Configuration
+app:
+  swagger:
+    server:
+      url: http://localhost:8081
+      description: Development Server

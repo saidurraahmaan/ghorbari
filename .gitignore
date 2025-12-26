@@ -110,3 +110,9 @@ coverage/
 
 ### Exceptions - Keep wrapper jar ###
 !.mvn/wrapper/maven-wrapper.jar
+
+### Liquibase ###
+core/src/main/resources/db/changelog/liquibase.properties
+
+### Spring Boot Development Configs ###
+web/src/main/resources/application-dev.yaml
