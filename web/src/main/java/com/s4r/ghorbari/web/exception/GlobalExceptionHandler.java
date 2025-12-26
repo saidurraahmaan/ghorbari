@@ -30,11 +30,9 @@ public class GlobalExceptionHandler {
         HttpStatus httpStatus = mapErrorCodeToHttpStatus(ex.getErrorCode());
 
         ErrorResponse errorResponse = new ErrorResponse(
-                httpStatus.value(),
                 httpStatus.getReasonPhrase().toUpperCase().replace(" ", "_"),
                 ex.getCode(),
-                ex.getMessage(),
-                request.getRequestURI()
+                ex.getMessage()
         );
 
         return new ResponseEntity<>(errorResponse, httpStatus);
@@ -58,6 +56,20 @@ public class GlobalExceptionHandler {
         };
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedException(
+            UnauthorizedException ex,
+            HttpServletRequest request) {
+        logger.error("Unauthorized: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                "UNAUTHORIZED",
+                ex.getMessage()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthenticationException(
             AuthenticationException ex,
@@ -65,10 +77,8 @@ public class GlobalExceptionHandler {
         logger.error("Authentication failed: {}", ex.getMessage());
 
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
                 "UNAUTHORIZED",
-                "Authentication failed",
-                request.getRequestURI()
+                "Authentication failed"
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
@@ -91,10 +101,8 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
                 "VALIDATION_FAILED",
                 "Validation failed for request",
-                request.getRequestURI(),
                 validationErrors
         );
 
@@ -117,10 +125,8 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
 
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
                 "VALIDATION_FAILED",
                 "Constraint violation",
-                request.getRequestURI(),
                 validationErrors
         );
 
@@ -134,10 +140,8 @@ public class GlobalExceptionHandler {
         logger.error("Unexpected error occurred: ", ex);
 
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "INTERNAL_SERVER_ERROR",
-                "An unexpected error occurred. Please try again later.",
-                request.getRequestURI()
+                "An unexpected error occurred. Please try again later."
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

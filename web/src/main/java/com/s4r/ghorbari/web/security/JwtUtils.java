@@ -28,8 +28,8 @@ public class JwtUtils implements IJwtUtils {
 
         return Jwts.builder()
                 .subject(userPrincipal.getUsername())
-                .claim("userId", userPrincipal.getId())
-                .claim("email", userPrincipal.getEmail())
+                .claim("userId", userPrincipal.id())
+                .claim("email", userPrincipal.email())
                 .claim("tenantId", tenantId)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpiration))

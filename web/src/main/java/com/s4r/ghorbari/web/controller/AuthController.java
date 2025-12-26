@@ -74,7 +74,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwt = jwtUtils.generateJwtToken(authentication, userDetails.getTenantId());
+        String jwt = jwtUtils.generateJwtToken(authentication, userDetails.tenantId());
 
         Set<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -82,10 +82,10 @@ public class AuthController {
 
         JwtResponse response = new JwtResponse(
                 jwt,
-                userDetails.getId(),
+                userDetails.id(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
-                userDetails.getTenantId(),
+                userDetails.email(),
+                userDetails.tenantId(),
                 roles
         );
 
@@ -134,10 +134,10 @@ public class AuthController {
 
             return ResponseEntity.ok(new JwtResponse(
                     null,
-                    userDetails.getId(),
+                    userDetails.id(),
                     userDetails.getUsername(),
-                    userDetails.getEmail(),
-                    userDetails.getTenantId(),
+                    userDetails.email(),
+                    userDetails.tenantId(),
                     roles
             ));
         }
