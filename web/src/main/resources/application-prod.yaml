@@ -1,0 +1,30 @@
+# Production Environment Configuration
+app:
+  swagger:
+    server:
+      url: ${SWAGGER_SERVER_URL:https://api.ghorbari.com}
+      description: Production Server
+
+# Disable Swagger in production (optional - uncomment to disable)
+# springdoc:
+#   swagger-ui:
+#     enabled: false
+#   api-docs:
+#     enabled: false
+
+# Production Database (use environment variables)
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ghorbari_prod}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Never use 'update' in production
+    show-sql: false       # Disable SQL logging in production
+
+# JWT Configuration (use environment variables)
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:86400000}

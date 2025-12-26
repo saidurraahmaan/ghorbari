@@ -1,0 +1,6 @@
+# Staging Environment Configuration
+app:
+  swagger:
+    server:
+      url: https://staging.ghorbari.com
+      description: Staging Server

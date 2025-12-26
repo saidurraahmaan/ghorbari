@@ -1,0 +1,32 @@
+# Development Environment Configuration
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5423/ghor_bari
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Auto-create/update tables in dev
+    show-sql: true      # Show SQL queries in console
+    properties:
+      hibernate:
+        format_sql: true  # Format SQL for readability
+
+  security:
+    user:
+      name: admin
+      password: admin
+
+# JWT Configuration for Development
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000
+
+# Swagger Configuration
+app:
+  swagger:
+    server:
+      url: http://localhost:8081
+      description: Development Server

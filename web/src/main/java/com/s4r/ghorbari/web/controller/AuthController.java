@@ -10,6 +10,13 @@ import com.s4r.ghorbari.web.dto.LoginRequest;
 import com.s4r.ghorbari.web.dto.RegisterRequest;
 import com.s4r.ghorbari.web.security.JwtUtils;
 import com.s4r.ghorbari.web.security.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Tag(name = "Authentication", description = "Authentication and user registration endpoints")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -47,6 +55,12 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @Operation(summary = "User login", description = "Authenticate user and receive JWT token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful",
+                    content = @Content(schema = @Schema(implementation = JwtResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         // Set tenant context for authentication
@@ -83,6 +97,11 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Register new user", description = "Create a new user account for a tenant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Email already in use")
+    })
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         // Set tenant context for registration
@@ -120,6 +139,13 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Get current user", description = "Get currently authenticated user information",
+            security = @SecurityRequirement(name = "Bearer Authentication"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User information retrieved",
+                    content = @Content(schema = @Schema(implementation = JwtResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Not authenticated")
+    })
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
