@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="saidur" id="seed-roles-1">
+        <comment>Seed default roles for the application</comment>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_SUPER_ADMIN"/>
+            <column name="description" value="Platform administrator with access to all tenants and system-wide settings"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_TENANT_ADMIN"/>
+            <column name="description" value="Tenant administrator managing their apartment complex"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_MANAGER"/>
+            <column name="description" value="Property manager handling day-to-day operations"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_STAFF"/>
+            <column name="description" value="Staff member with limited access"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_RESIDENT"/>
+            <column name="description" value="Resident/tenant with access to their own information"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="roles">
+                <where>name IN ('ROLE_SUPER_ADMIN', 'ROLE_TENANT_ADMIN', 'ROLE_MANAGER', 'ROLE_STAFF', 'ROLE_RESIDENT')</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
