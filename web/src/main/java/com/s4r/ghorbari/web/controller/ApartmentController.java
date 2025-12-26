@@ -30,15 +30,14 @@ public class ApartmentController {
 
     @Operation(summary = "Create new apartment", description = "Add a new apartment to the system")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Apartment created successfully",
-                    content = @Content(schema = @Schema(implementation = Apartment.class))),
+            @ApiResponse(responseCode = "201", description = "Apartment created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<Apartment> createApartment(@RequestBody Apartment apartment) {
-        Apartment created = apartmentService.createApartment(apartment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<Void> createApartment(@RequestBody Apartment apartment) {
+        apartmentService.createApartment(apartment);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Get all apartments", description = "Retrieve all apartments for the current tenant")
@@ -82,18 +81,17 @@ public class ApartmentController {
 
     @Operation(summary = "Update apartment", description = "Update an existing apartment")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Apartment updated successfully",
-                    content = @Content(schema = @Schema(implementation = Apartment.class))),
+            @ApiResponse(responseCode = "204", description = "Apartment updated successfully"),
             @ApiResponse(responseCode = "404", description = "Apartment not found"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Apartment> updateApartment(
+    public ResponseEntity<Void> updateApartment(
             @Parameter(description = "Apartment ID") @PathVariable Long id,
             @RequestBody Apartment apartment) {
         apartment.setId(id);
-        Apartment updated = apartmentService.updateApartment(apartment);
-        return ResponseEntity.ok(updated);
+        apartmentService.updateApartment(apartment);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Delete apartment", description = "Delete an apartment from the system")

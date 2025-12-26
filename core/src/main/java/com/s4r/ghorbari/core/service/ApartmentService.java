@@ -18,8 +18,8 @@ public class ApartmentService implements IApartmentService {
         this.apartmentRepository = apartmentRepository;
     }
 
-    public Apartment createApartment(Apartment apartment) {
-        return apartmentRepository.save(apartment);
+    public void createApartment(Apartment apartment) {
+        apartmentRepository.save(apartment);
     }
 
     public Optional<Apartment> getApartmentById(Long id) {
@@ -34,8 +34,8 @@ public class ApartmentService implements IApartmentService {
         return apartmentRepository.findByStatus(status);
     }
 
-    public Apartment updateApartment(Apartment apartment) {
-        return apartmentRepository.save(apartment);
+    public void updateApartment(Apartment apartment) {
+        apartmentRepository.save(apartment);
     }
 
     public void deleteApartment(Long id) {

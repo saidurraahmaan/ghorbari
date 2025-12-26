@@ -102,7 +102,7 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         userService.registerUser(
                 registerRequest.getUsername(),
                 registerRequest.getEmail(),
@@ -110,8 +110,7 @@ public class AuthController {
                 registerRequest.getTenantId()
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("User registered successfully!");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Get current user", description = "Get currently authenticated user information",

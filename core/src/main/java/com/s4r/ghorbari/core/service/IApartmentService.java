@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface IApartmentService {
 
-    Apartment createApartment(Apartment apartment);
+    void createApartment(Apartment apartment);
 
     Optional<Apartment> getApartmentById(Long id);
 
@@ -15,7 +15,7 @@ public interface IApartmentService {
 
     List<Apartment> getApartmentsByStatus(Apartment.ApartmentStatus status);
 
-    Apartment updateApartment(Apartment apartment);
+    void updateApartment(Apartment apartment);
 
     void deleteApartment(Long id);
 }

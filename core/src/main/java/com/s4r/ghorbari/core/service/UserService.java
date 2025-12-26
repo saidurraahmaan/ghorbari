@@ -27,7 +27,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User registerUser(String username, String email, String encodedPassword, Long tenantId) {
+    public void registerUser(String username, String email, String encodedPassword, Long tenantId) {
         TenantContext.setCurrentTenantId(tenantId);
 
         try {
@@ -45,7 +45,7 @@ public class UserService implements IUserService {
             roles.add(userRole);
             user.setRoles(roles);
 
-            return userRepository.save(user);
+            userRepository.save(user);
         } finally {
             TenantContext.clear();
         }
