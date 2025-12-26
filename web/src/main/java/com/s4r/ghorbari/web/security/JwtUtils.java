@@ -13,7 +13,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
-public class JwtUtils {
+public class JwtUtils implements IJwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 

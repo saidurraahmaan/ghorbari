@@ -1,14 +1,11 @@
 package com.s4r.ghorbari.web.controller;
 
 import com.s4r.ghorbari.core.context.TenantContext;
-import com.s4r.ghorbari.core.entity.Role;
-import com.s4r.ghorbari.core.entity.User;
-import com.s4r.ghorbari.core.repository.RoleRepository;
-import com.s4r.ghorbari.core.repository.UserRepository;
+import com.s4r.ghorbari.core.service.IUserService;
 import com.s4r.ghorbari.web.dto.JwtResponse;
 import com.s4r.ghorbari.web.dto.LoginRequest;
 import com.s4r.ghorbari.web.dto.RegisterRequest;
-import com.s4r.ghorbari.web.security.JwtUtils;
+import com.s4r.ghorbari.web.security.IJwtUtils;
 import com.s4r.ghorbari.web.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +25,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,19 +34,16 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final IUserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtils jwtUtils;
+    private final IJwtUtils jwtUtils;
 
     public AuthController(AuthenticationManager authenticationManager,
-                         UserRepository userRepository,
-                         RoleRepository roleRepository,
+                         IUserService userService,
                          PasswordEncoder passwordEncoder,
-                         JwtUtils jwtUtils) {
+                         IJwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
     }
@@ -104,38 +97,22 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        // Set tenant context for registration
-        if (registerRequest.getTenantId() != null) {
-            TenantContext.setCurrentTenantId(registerRequest.getTenantId());
-        }
-
         try {
-            if (userRepository.existsByEmailAndTenantId(registerRequest.getEmail(), registerRequest.getTenantId())) {
-                return ResponseEntity.badRequest()
-                        .body("Error: Email is already in use for this tenant!");
-            }
-
-            // Create new user
-            User user = new User(
+            userService.registerUser(
                     registerRequest.getUsername(),
                     registerRequest.getEmail(),
-                    passwordEncoder.encode(registerRequest.getPassword())
+                    passwordEncoder.encode(registerRequest.getPassword()),
+                    registerRequest.getTenantId()
             );
-            user.setTenantId(registerRequest.getTenantId());
-
-            // Assign default role
-            Set<Role> roles = new HashSet<>();
-            Role userRole = roleRepository.findByName(Role.RoleName.ROLE_RESIDENT)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-            user.setRoles(roles);
-
-            userRepository.save(user);
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("User registered successfully!");
-        } finally {
-            TenantContext.clear();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body("Error: " + e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error: " + e.getMessage());
         }
     }
 
