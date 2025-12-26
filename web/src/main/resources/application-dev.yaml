@@ -8,8 +8,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update  # Auto-create/update tables in dev
-    show-sql: true      # Show SQL queries in console
+      ddl-auto: none  # Liquibase manages schema, Hibernate only validates
+    show-sql: true        # Show SQL queries in console
     properties:
       hibernate:
         format_sql: true  # Format SQL for readability
