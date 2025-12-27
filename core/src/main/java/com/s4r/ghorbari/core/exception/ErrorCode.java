@@ -29,7 +29,11 @@ public enum ErrorCode {
 
     // Data integrity errors (6000-6999)
     DATA_INTEGRITY_VIOLATION(6001, "Data integrity violation: %s"),
-    CONSTRAINT_VIOLATION(6002, "Constraint violation: %s");
+    CONSTRAINT_VIOLATION(6002, "Constraint violation: %s"),
+
+    // Security and Authorization errors (7000-7999)
+    UNAUTHORIZED(7001, "Authentication required: %s"),
+    ACCESS_DENIED(7002, "Access denied: %s");
 
     private final int code;
     private final String messageTemplate;

@@ -6,6 +6,8 @@ import com.s4r.ghorbari.core.entity.Amenity;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.AmenityRepository;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void createAmenity(AmenityDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -76,6 +79,7 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateAmenity(Long id, AmenityDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -92,6 +96,7 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void deleteAmenity(Long id) {
         Amenity amenity = amenityRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Amenity not found"));

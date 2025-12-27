@@ -6,6 +6,8 @@ import com.s4r.ghorbari.core.entity.AmenityBooking;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.AmenityBookingRepository;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class AmenityBookingService implements IAmenityBookingService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_RESIDENT})
     public void createBooking(AmenityBookingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -109,6 +112,7 @@ public class AmenityBookingService implements IAmenityBookingService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateBooking(Long id, AmenityBookingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -184,6 +188,7 @@ public class AmenityBookingService implements IAmenityBookingService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void deleteBooking(Long id) {
         AmenityBooking booking = amenityBookingRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Booking not found"));

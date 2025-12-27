@@ -6,6 +6,8 @@ import com.s4r.ghorbari.core.entity.Announcement;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.AnnouncementRepository;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,7 @@ public class AnnouncementService implements IAnnouncementService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_STAFF})
     public void createAnnouncement(AnnouncementDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -91,6 +94,7 @@ public class AnnouncementService implements IAnnouncementService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_STAFF})
     public void updateAnnouncement(Long id, AnnouncementDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -144,6 +148,7 @@ public class AnnouncementService implements IAnnouncementService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void deleteAnnouncement(Long id) {
         Announcement announcement = announcementRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Announcement not found"));

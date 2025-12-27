@@ -7,7 +7,11 @@ import com.s4r.ghorbari.core.entity.Payment;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.InvoiceRepository;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import com.s4r.ghorbari.core.repository.PaymentRepository;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,6 +119,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updatePayment(Long id, PaymentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -172,6 +177,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void deletePayment(Long id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Payment not found"));

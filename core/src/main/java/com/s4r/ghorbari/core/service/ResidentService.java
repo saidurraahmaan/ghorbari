@@ -6,6 +6,8 @@ import com.s4r.ghorbari.core.entity.Resident;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.ResidentRepository;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +70,7 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateResident(Long id, ResidentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -84,6 +87,7 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void deleteResident(Long id) {
         Resident resident = residentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Resident not found"));

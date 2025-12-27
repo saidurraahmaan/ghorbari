@@ -3,9 +3,11 @@ package com.s4r.ghorbari.core.service;
 import com.s4r.ghorbari.core.context.TenantContext;
 import com.s4r.ghorbari.core.domain.BuildingDto;
 import com.s4r.ghorbari.core.entity.Building;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.BuildingRepository;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void createBuilding(BuildingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -67,6 +70,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateBuilding(Long id, BuildingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -83,6 +87,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void deleteBuilding(Long id) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {

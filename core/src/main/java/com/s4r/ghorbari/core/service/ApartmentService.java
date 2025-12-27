@@ -3,9 +3,11 @@ package com.s4r.ghorbari.core.service;
 import com.s4r.ghorbari.core.context.TenantContext;
 import com.s4r.ghorbari.core.domain.ApartmentDto;
 import com.s4r.ghorbari.core.entity.Apartment;
+import com.s4r.ghorbari.core.entity.Role.RoleName;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.ApartmentRepository;
+import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ public class ApartmentService implements IApartmentService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void createApartment(ApartmentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -62,6 +65,7 @@ public class ApartmentService implements IApartmentService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateApartment(Long id, ApartmentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -78,6 +82,7 @@ public class ApartmentService implements IApartmentService {
     }
 
     @Override
+    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
     public void deleteApartment(Long id) {
         Apartment apartment = apartmentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Apartment not found"));
