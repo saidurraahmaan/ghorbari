@@ -1,9 +1,10 @@
 package com.s4r.ghorbari.web.controller;
 
 import com.s4r.ghorbari.core.context.TenantContext;
+import com.s4r.ghorbari.core.enums.RoleName;
 import com.s4r.ghorbari.core.service.IUserService;
-import com.s4r.ghorbari.web.dto.JwtResponse;
 import com.s4r.ghorbari.web.dto.LoginRequest;
+import com.s4r.ghorbari.web.dto.LoginResponse;
 import com.s4r.ghorbari.web.dto.RegisterRequest;
 import com.s4r.ghorbari.web.dto.UserInfoResponse;
 import com.s4r.ghorbari.web.exception.ErrorResponse;
@@ -54,7 +55,7 @@ public class AuthController {
     @Operation(summary = "User login", description = "Authenticate user and receive JWT token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login successful",
-                    content = @Content(schema = @Schema(implementation = JwtResponse.class))),
+                    content = @Content(schema = @Schema(implementation = LoginResponse.class))),
             @ApiResponse(responseCode = "401", description = "Invalid credentials",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
@@ -78,18 +79,19 @@ public class AuthController {
 
         String jwt = jwtUtils.generateJwtToken(authentication, tenantId);
 
-        Set<String> roles = userDetails.getAuthorities().stream()
+        Set<RoleName> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
+                .map(RoleName::valueOf)
                 .collect(Collectors.toSet());
 
-        JwtResponse response = new JwtResponse(
-                jwt,
+        LoginResponse.UserInfo userInfo = new LoginResponse.UserInfo(
                 userDetails.id(),
                 userDetails.getUsername(),
                 userDetails.email(),
-                tenantId,
                 roles
         );
+
+        LoginResponse response = new LoginResponse(jwt, userInfo);
 
         return ResponseEntity.ok(response);
     }

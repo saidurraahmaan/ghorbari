@@ -3,7 +3,7 @@ package com.s4r.ghorbari.core.service;
 import com.s4r.ghorbari.core.context.TenantContext;
 import com.s4r.ghorbari.core.domain.BuildingDto;
 import com.s4r.ghorbari.core.entity.Building;
-import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.enums.RoleName;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.BuildingRepository;

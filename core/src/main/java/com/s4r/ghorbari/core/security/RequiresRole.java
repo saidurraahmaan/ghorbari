@@ -1,6 +1,6 @@
 package com.s4r.ghorbari.core.security;
 
-import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.enums.RoleName;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

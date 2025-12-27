@@ -6,7 +6,7 @@ import com.s4r.ghorbari.core.entity.Lease;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import com.s4r.ghorbari.core.repository.LeaseRepository;
-import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.enums.RoleName;
 import com.s4r.ghorbari.core.security.RequiresRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

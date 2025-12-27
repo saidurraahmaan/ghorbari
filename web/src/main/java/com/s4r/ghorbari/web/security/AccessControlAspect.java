@@ -1,6 +1,6 @@
 package com.s4r.ghorbari.core.security;
 
-import com.s4r.ghorbari.core.entity.Role.RoleName;
+import com.s4r.ghorbari.core.enums.RoleName;
 import com.s4r.ghorbari.core.exception.ErrorCode;
 import com.s4r.ghorbari.core.exception.ServiceException;
 import org.aspectj.lang.JoinPoint;

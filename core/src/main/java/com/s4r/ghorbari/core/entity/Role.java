@@ -1,5 +1,6 @@
 package com.s4r.ghorbari.core.entity;
 
+import com.s4r.ghorbari.core.enums.RoleName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,14 +24,6 @@ public class Role extends BaseEntity {
 
     public Role(RoleName name) {
         this.name = name;
-    }
-
-    public enum RoleName {
-        ROLE_SUPER_ADMIN,   // Platform admin (manages all tenants)
-        ROLE_TENANT_ADMIN,  // Tenant admin (manages their apartment complex)
-        ROLE_MANAGER,       // Property manager
-        ROLE_STAFF,         // Staff member
-        ROLE_RESIDENT       // Resident/tenant
     }
 
     // Getters and Setters
