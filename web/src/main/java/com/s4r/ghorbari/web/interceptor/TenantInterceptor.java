@@ -37,16 +37,10 @@ public class TenantInterceptor implements HandlerInterceptor {
 
         // If not set by JWT, try other strategies
         if (tenantId == null) {
-            String tenantIdStr = extractTenantId(request);
+            tenantId = resolveTenantId(request);
 
-            if (tenantIdStr != null && !tenantIdStr.isEmpty()) {
-                try {
-                    tenantId = Long.parseLong(tenantIdStr);
-                    TenantContext.setCurrentTenantId(tenantId);
-                } catch (NumberFormatException e) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    return false;
-                }
+            if (tenantId != null) {
+                TenantContext.setCurrentTenantId(tenantId);
             }
         }
 
@@ -67,34 +61,26 @@ public class TenantInterceptor implements HandlerInterceptor {
         // TenantContext.clear();
     }
 
-    private String extractTenantId(HttpServletRequest request) {
-        // Strategy 1: Extract from JWT token
+    /**
+     * Resolve tenant ID from request
+     * Strategy: Frontend sends X-Tenant-Key header -> lookup tenant in DB -> return tenant ID
+     */
+    private Long resolveTenantId(HttpServletRequest request) {
+        // Strategy 1: Extract from JWT token (for authenticated requests)
         String jwt = parseJwt(request);
         if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
             Long tenantId = jwtUtils.getTenantIdFromJwtToken(jwt);
             if (tenantId != null) {
-                return tenantId.toString();
+                return tenantId;
             }
         }
 
-        // Strategy 2: Extract from subdomain
-        String tenantId = extractFromSubdomain(request);
-        if (tenantId != null && !tenantId.isEmpty()) {
-            return tenantId;
-        }
-
-        // Strategy 3: Fallback to header (for development/testing)
-        tenantId = request.getHeader(TENANT_HEADER);
-        if (tenantId != null && !tenantId.isEmpty()) {
-            return tenantId;
-        }
-
-        // Strategy 4: Fallback to X-Tenant-Key header (tenant key instead of ID)
+        // Strategy 2: Extract from X-Tenant-Key header (frontend sends tenant key)
         String tenantKey = request.getHeader("X-Tenant-Key");
         if (tenantKey != null && !tenantKey.isEmpty()) {
             Optional<Tenant> tenant = tenantRepository.findByTenantKeyAndActiveTrue(tenantKey);
             if (tenant.isPresent()) {
-                return tenant.get().getId().toString();
+                return tenant.get().getId();
             }
         }
 
@@ -111,37 +97,4 @@ public class TenantInterceptor implements HandlerInterceptor {
         return null;
     }
 
-    private String extractFromSubdomain(HttpServletRequest request) {
-        String serverName = request.getServerName();
-
-        // Skip if serverName is null or IP address
-        if (serverName == null || serverName.matches("\\d+\\.\\d+\\.\\d+\\.\\d+")) {
-            return null;
-        }
-
-        // Split by dot
-        String[] parts = serverName.split("\\.");
-
-        String tenantKey = null;
-
-        // Handle localhost subdomains: tenant1.localhost
-        if (parts.length == 2 && parts[1].equals("localhost")) {
-            tenantKey = parts[0];
-        }
-        // Handle production subdomains: tenant1.example.com or tenant1.example.co.uk
-        else if (parts.length >= 3) {
-            tenantKey = parts[0]; // First part is the subdomain (tenant key)
-        }
-
-        // Look up tenant by tenantKey in database
-        if (tenantKey != null && !tenantKey.isEmpty()) {
-            Optional<Tenant> tenant = tenantRepository.findByTenantKeyAndActiveTrue(tenantKey);
-
-            if (tenant.isPresent()) {
-                return tenant.get().getId().toString();
-            }
-        }
-
-        return null;
-    }
 }
