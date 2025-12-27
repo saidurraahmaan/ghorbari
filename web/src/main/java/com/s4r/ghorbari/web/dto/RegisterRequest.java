@@ -19,16 +19,13 @@ public class RegisterRequest {
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    private Long tenantId;
-
     public RegisterRequest() {
     }
 
-    public RegisterRequest(String username, String email, String password, Long tenantId) {
+    public RegisterRequest(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.tenantId = tenantId;
     }
 
     // Getters and Setters
@@ -54,13 +51,5 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
     }
 }

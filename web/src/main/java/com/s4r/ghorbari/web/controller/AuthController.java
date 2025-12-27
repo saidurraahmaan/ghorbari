@@ -60,9 +60,10 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        // Set tenant context for authentication
-        if (loginRequest.getTenantId() != null) {
-            TenantContext.setCurrentTenantId(loginRequest.getTenantId());
+        // Tenant context is already set by TenantInterceptor from subdomain
+        Long tenantId = TenantContext.getCurrentTenantId();
+        if (tenantId == null) {
+            throw new UnauthorizedException("Tenant context not found");
         }
 
         Authentication authentication = authenticationManager.authenticate(
@@ -75,7 +76,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        String jwt = jwtUtils.generateJwtToken(authentication, userDetails.tenantId());
+        String jwt = jwtUtils.generateJwtToken(authentication, tenantId);
 
         Set<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -86,11 +87,10 @@ public class AuthController {
                 userDetails.id(),
                 userDetails.getUsername(),
                 userDetails.email(),
-                userDetails.tenantId(),
+                tenantId,
                 roles
         );
 
-        TenantContext.clear();
         return ResponseEntity.ok(response);
     }
 
@@ -104,11 +104,17 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+        // Tenant context is already set by TenantInterceptor from subdomain
+        Long tenantId = TenantContext.getCurrentTenantId();
+        if (tenantId == null) {
+            throw new UnauthorizedException("Tenant context not found");
+        }
+
         userService.registerUser(
                 registerRequest.getUsername(),
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword()),
-                registerRequest.getTenantId()
+                tenantId
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

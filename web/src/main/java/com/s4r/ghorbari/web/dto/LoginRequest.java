@@ -12,15 +12,12 @@ public class LoginRequest {
     @NotBlank(message = "Password is required")
     private String password;
 
-    private Long tenantId;
-
     public LoginRequest() {
     }
 
-    public LoginRequest(String email, String password, Long tenantId) {
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
-        this.tenantId = tenantId;
     }
 
     // Getters and Setters
@@ -38,13 +35,5 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
     }
 }

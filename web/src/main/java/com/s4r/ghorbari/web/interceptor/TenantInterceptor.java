@@ -1,6 +1,9 @@
 package com.s4r.ghorbari.web.interceptor;
 
 import com.s4r.ghorbari.core.context.TenantContext;
+import com.s4r.ghorbari.core.entity.Tenant;
+import com.s4r.ghorbari.core.repository.TenantRepository;
+import com.s4r.ghorbari.web.security.IJwtUtils;
 import com.s4r.ghorbari.web.security.JwtUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,17 +13,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import java.util.Optional;
+
 @Component
 public class TenantInterceptor implements HandlerInterceptor {
 
     private static final String TENANT_HEADER = "X-Tenant-ID";
 
     private final EntityManager entityManager;
-    private final JwtUtils jwtUtils;
+    private final IJwtUtils jwtUtils;
+    private final TenantRepository tenantRepository;
 
-    public TenantInterceptor(EntityManager entityManager, JwtUtils jwtUtils) {
+    public TenantInterceptor(EntityManager entityManager, IJwtUtils jwtUtils, TenantRepository tenantRepository) {
         this.entityManager = entityManager;
         this.jwtUtils = jwtUtils;
+        this.tenantRepository = tenantRepository;
     }
 
     @Override
@@ -70,14 +77,28 @@ public class TenantInterceptor implements HandlerInterceptor {
             }
         }
 
-        // Strategy 2: Extract from header
-        String tenantId = request.getHeader(TENANT_HEADER);
+        // Strategy 2: Extract from subdomain
+        String tenantId = extractFromSubdomain(request);
         if (tenantId != null && !tenantId.isEmpty()) {
             return tenantId;
         }
 
-        // Strategy 3: Extract from subdomain
-        return extractFromSubdomain(request);
+        // Strategy 3: Fallback to header (for development/testing)
+        tenantId = request.getHeader(TENANT_HEADER);
+        if (tenantId != null && !tenantId.isEmpty()) {
+            return tenantId;
+        }
+
+        // Strategy 4: Fallback to X-Tenant-Key header (tenant key instead of ID)
+        String tenantKey = request.getHeader("X-Tenant-Key");
+        if (tenantKey != null && !tenantKey.isEmpty()) {
+            Optional<Tenant> tenant = tenantRepository.findByTenantKeyAndActiveTrue(tenantKey);
+            if (tenant.isPresent()) {
+                return tenant.get().getId().toString();
+            }
+        }
+
+        return null;
     }
 
     private String parseJwt(HttpServletRequest request) {
@@ -93,14 +114,31 @@ public class TenantInterceptor implements HandlerInterceptor {
     private String extractFromSubdomain(HttpServletRequest request) {
         String serverName = request.getServerName();
 
-        // Example: tenant1.yourdomain.com -> tenant1
-        // This is a simple implementation, adjust based on your domain structure
-        if (serverName != null && serverName.contains(".")) {
-            String[] parts = serverName.split("\\.");
-            if (parts.length > 2) {
-                // Return the subdomain part
-                // You would need to map subdomain to tenant ID in your database
-                return null; // Implement mapping logic here
+        // Skip if serverName is null or IP address
+        if (serverName == null || serverName.matches("\\d+\\.\\d+\\.\\d+\\.\\d+")) {
+            return null;
+        }
+
+        // Split by dot
+        String[] parts = serverName.split("\\.");
+
+        String tenantKey = null;
+
+        // Handle localhost subdomains: tenant1.localhost
+        if (parts.length == 2 && parts[1].equals("localhost")) {
+            tenantKey = parts[0];
+        }
+        // Handle production subdomains: tenant1.example.com or tenant1.example.co.uk
+        else if (parts.length >= 3) {
+            tenantKey = parts[0]; // First part is the subdomain (tenant key)
+        }
+
+        // Look up tenant by tenantKey in database
+        if (tenantKey != null && !tenantKey.isEmpty()) {
+            Optional<Tenant> tenant = tenantRepository.findByTenantKeyAndActiveTrue(tenantKey);
+
+            if (tenant.isPresent()) {
+                return tenant.get().getId().toString();
             }
         }
 
