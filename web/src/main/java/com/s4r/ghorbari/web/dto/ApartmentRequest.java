@@ -1,64 +1,39 @@
-package com.s4r.ghorbari.core.entity;
+package com.s4r.ghorbari.web.dto;
 
-import jakarta.persistence.*;
+import com.s4r.ghorbari.core.entity.Apartment;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "apartments")
-public class Apartment extends TenantAwareEntity {
+public class ApartmentRequest {
 
     @NotBlank(message = "Apartment number is required")
-    @Size(max = 50)
-    @Column(nullable = false, length = 50)
     private String apartmentNumber;
 
-    @Column(name = "building_id")
+    @NotNull(message = "Building ID is required")
     private Long buildingId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id", insertable = false, updatable = false)
-    private Building building;
-
-    @Column(nullable = false)
+    @Positive(message = "Floor must be positive")
     private Integer floor;
 
-    @Column(nullable = false)
+    @Positive(message = "Number of bedrooms must be positive")
     private Integer bedrooms;
 
-    @Column(nullable = false)
+    @Positive(message = "Number of bathrooms must be positive")
     private Integer bathrooms;
 
-    @Column(precision = 10, scale = 2)
     private BigDecimal squareFootage;
 
-    @Column(precision = 10, scale = 2)
     private BigDecimal rentAmount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private ApartmentStatus status = ApartmentStatus.VACANT;
+    private Apartment.ApartmentStatus status;
 
-    @Size(max = 500)
-    @Column(length = 500)
     private String description;
 
-    public Apartment() {
-    }
-
-    public Apartment(String apartmentNumber, Integer floor, Integer bedrooms, Integer bathrooms) {
-        this.apartmentNumber = apartmentNumber;
-        this.floor = floor;
-        this.bedrooms = bedrooms;
-        this.bathrooms = bathrooms;
-    }
-
-    public enum ApartmentStatus {
-        VACANT,
-        OCCUPIED,
-        MAINTENANCE,
-        RESERVED
+    // Constructors
+    public ApartmentRequest() {
     }
 
     // Getters and Setters
@@ -76,14 +51,6 @@ public class Apartment extends TenantAwareEntity {
 
     public void setBuildingId(Long buildingId) {
         this.buildingId = buildingId;
-    }
-
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
     }
 
     public Integer getFloor() {
@@ -126,11 +93,11 @@ public class Apartment extends TenantAwareEntity {
         this.rentAmount = rentAmount;
     }
 
-    public ApartmentStatus getStatus() {
+    public Apartment.ApartmentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ApartmentStatus status) {
+    public void setStatus(Apartment.ApartmentStatus status) {
         this.status = status;
     }
 

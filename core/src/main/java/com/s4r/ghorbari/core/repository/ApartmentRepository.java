@@ -11,7 +11,7 @@ public interface ApartmentRepository extends JpaRepository<Apartment, Long> {
 
     List<Apartment> findByStatus(Apartment.ApartmentStatus status);
 
-    List<Apartment> findByBuilding(String building);
+    List<Apartment> findByBuildingId(Long buildingId);
 
     List<Apartment> findByFloor(Integer floor);
 }

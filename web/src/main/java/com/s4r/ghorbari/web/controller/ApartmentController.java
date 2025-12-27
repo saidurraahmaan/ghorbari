@@ -1,7 +1,11 @@
 package com.s4r.ghorbari.web.controller;
 
+import com.s4r.ghorbari.core.domain.ApartmentDto;
 import com.s4r.ghorbari.core.entity.Apartment;
 import com.s4r.ghorbari.core.service.IApartmentService;
+import com.s4r.ghorbari.web.dto.ApartmentRequest;
+import com.s4r.ghorbari.web.exception.ErrorResponse;
+import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,8 +39,9 @@ public class ApartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<?> createApartment(@RequestBody Apartment apartment) {
-        apartmentService.createApartment(apartment);
+    public ResponseEntity<?> createApartment(@Valid @RequestBody ApartmentRequest request) {
+        ApartmentDto dto = mapToDto(request);
+        apartmentService.createApartment(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -46,20 +51,20 @@ public class ApartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping
-    public ResponseEntity<List<Apartment>> getAllApartments() {
-        List<Apartment> apartments = apartmentService.getAllApartments();
+    public ResponseEntity<List<ApartmentDto>> getAllApartments() {
+        List<ApartmentDto> apartments = apartmentService.getAllApartments();
         return ResponseEntity.ok(apartments);
     }
 
     @Operation(summary = "Get apartment by ID", description = "Retrieve a specific apartment by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Apartment found",
-                    content = @Content(schema = @Schema(implementation = Apartment.class))),
+                    content = @Content(schema = @Schema(implementation = ApartmentDto.class))),
             @ApiResponse(responseCode = "404", description = "Apartment not found"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Apartment> getApartmentById(
+    public ResponseEntity<ApartmentDto> getApartmentById(
             @Parameter(description = "Apartment ID") @PathVariable Long id) {
         return apartmentService.getApartmentById(id)
                 .map(ResponseEntity::ok)
@@ -72,10 +77,22 @@ public class ApartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Apartment>> getApartmentsByStatus(
+    public ResponseEntity<List<ApartmentDto>> getApartmentsByStatus(
             @Parameter(description = "Apartment status (VACANT, OCCUPIED, MAINTENANCE, RESERVED)")
             @PathVariable Apartment.ApartmentStatus status) {
-        List<Apartment> apartments = apartmentService.getApartmentsByStatus(status);
+        List<ApartmentDto> apartments = apartmentService.getApartmentsByStatus(status);
+        return ResponseEntity.ok(apartments);
+    }
+
+    @Operation(summary = "Get apartments by building", description = "Retrieve apartments filtered by building ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartments retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping("/building/{buildingId}")
+    public ResponseEntity<List<ApartmentDto>> getApartmentsByBuilding(
+            @Parameter(description = "Building ID") @PathVariable Long buildingId) {
+        List<ApartmentDto> apartments = apartmentService.getApartmentsByBuildingId(buildingId);
         return ResponseEntity.ok(apartments);
     }
 
@@ -88,9 +105,9 @@ public class ApartmentController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateApartment(
             @Parameter(description = "Apartment ID") @PathVariable Long id,
-            @RequestBody Apartment apartment) {
-        apartment.setId(id);
-        apartmentService.updateApartment(apartment);
+            @Valid @RequestBody ApartmentRequest request) {
+        ApartmentDto dto = mapToDto(request);
+        apartmentService.updateApartment(id, dto);
         return ResponseEntity.noContent().build();
     }
 
@@ -105,5 +122,19 @@ public class ApartmentController {
             @Parameter(description = "Apartment ID") @PathVariable Long id) {
         apartmentService.deleteApartment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private ApartmentDto mapToDto(ApartmentRequest request) {
+        ApartmentDto dto = new ApartmentDto();
+        dto.setApartmentNumber(request.getApartmentNumber());
+        dto.setBuildingId(request.getBuildingId());
+        dto.setFloor(request.getFloor());
+        dto.setBedrooms(request.getBedrooms());
+        dto.setBathrooms(request.getBathrooms());
+        dto.setSquareFootage(request.getSquareFootage());
+        dto.setRentAmount(request.getRentAmount());
+        dto.setStatus(request.getStatus());
+        dto.setDescription(request.getDescription());
+        return dto;
     }
 }

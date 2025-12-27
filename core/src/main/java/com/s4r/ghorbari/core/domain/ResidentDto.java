@@ -1,102 +1,90 @@
-package com.s4r.ghorbari.core.entity;
+package com.s4r.ghorbari.core.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.s4r.ghorbari.core.entity.Resident;
+
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "residents")
-public class Resident extends TenantAwareEntity {
+public class ResidentDto {
 
-    @NotBlank(message = "First name is required")
-    @Size(max = 100)
-    @Column(nullable = false, length = 100)
+    private Long id;
     private String firstName;
-
-    @NotBlank(message = "Last name is required")
-    @Size(max = 100)
-    @Column(nullable = false, length = 100)
     private String lastName;
-
-    @Email(message = "Invalid email format")
-    @Size(max = 150)
-    @Column(unique = true, length = 150)
     private String email;
-
-    @Size(max = 20)
-    @Column(length = 20)
     private String phoneNumber;
-
-    @Column
     private LocalDate dateOfBirth;
-
-    @Column(name = "user_id")
     private Long userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
-
-    @Column(name = "national_id", length = 50)
     private String nationalId;
-
-    @Column(name = "passport_number", length = 50)
     private String passportNumber;
-
-    @Column(name = "passport_expiry_date")
     private LocalDate passportExpiryDate;
-
-    @Column(name = "nationality", length = 100)
     private String nationality;
-
-    @Column(name = "emergency_contact_name", length = 100)
     private String emergencyContactName;
-
-    @Column(name = "emergency_contact_phone", length = 20)
     private String emergencyContactPhone;
-
-    @Column(name = "emergency_contact_relationship", length = 50)
     private String emergencyContactRelationship;
-
-    @Column(name = "is_primary_resident")
-    private Boolean isPrimaryResident = false;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartment_id")
-    private Apartment apartment;
-
-    @Column
+    private Boolean isPrimaryResident;
     private LocalDate moveInDate;
-
-    @Column
     private LocalDate moveOutDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private ResidentStatus status = ResidentStatus.ACTIVE;
-
-    @Size(max = 500)
-    @Column(length = 500)
+    private Resident.ResidentStatus status;
     private String notes;
 
-    public Resident() {
+    // Constructors
+    public ResidentDto() {
     }
 
-    public Resident(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public ResidentDto(Resident resident) {
+        this.id = resident.getId();
+        this.firstName = resident.getFirstName();
+        this.lastName = resident.getLastName();
+        this.email = resident.getEmail();
+        this.phoneNumber = resident.getPhoneNumber();
+        this.dateOfBirth = resident.getDateOfBirth();
+        this.userId = resident.getUserId();
+        this.nationalId = resident.getNationalId();
+        this.passportNumber = resident.getPassportNumber();
+        this.passportExpiryDate = resident.getPassportExpiryDate();
+        this.nationality = resident.getNationality();
+        this.emergencyContactName = resident.getEmergencyContactName();
+        this.emergencyContactPhone = resident.getEmergencyContactPhone();
+        this.emergencyContactRelationship = resident.getEmergencyContactRelationship();
+        this.isPrimaryResident = resident.getIsPrimaryResident();
+        this.moveInDate = resident.getMoveInDate();
+        this.moveOutDate = resident.getMoveOutDate();
+        this.status = resident.getStatus();
+        this.notes = resident.getNotes();
     }
 
-    public enum ResidentStatus {
-        ACTIVE,
-        INACTIVE,
-        EVICTED
+    public Resident toEntity() {
+        Resident resident = new Resident();
+        resident.setId(this.id);
+        resident.setFirstName(this.firstName);
+        resident.setLastName(this.lastName);
+        resident.setEmail(this.email);
+        resident.setPhoneNumber(this.phoneNumber);
+        resident.setDateOfBirth(this.dateOfBirth);
+        resident.setUserId(this.userId);
+        resident.setNationalId(this.nationalId);
+        resident.setPassportNumber(this.passportNumber);
+        resident.setPassportExpiryDate(this.passportExpiryDate);
+        resident.setNationality(this.nationality);
+        resident.setEmergencyContactName(this.emergencyContactName);
+        resident.setEmergencyContactPhone(this.emergencyContactPhone);
+        resident.setEmergencyContactRelationship(this.emergencyContactRelationship);
+        resident.setIsPrimaryResident(this.isPrimaryResident);
+        resident.setMoveInDate(this.moveInDate);
+        resident.setMoveOutDate(this.moveOutDate);
+        resident.setStatus(this.status);
+        resident.setNotes(this.notes);
+        return resident;
     }
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -143,14 +131,6 @@ public class Resident extends TenantAwareEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getNationalId() {
@@ -217,14 +197,6 @@ public class Resident extends TenantAwareEntity {
         this.isPrimaryResident = isPrimaryResident;
     }
 
-    public Apartment getApartment() {
-        return apartment;
-    }
-
-    public void setApartment(Apartment apartment) {
-        this.apartment = apartment;
-    }
-
     public LocalDate getMoveInDate() {
         return moveInDate;
     }
@@ -241,11 +213,11 @@ public class Resident extends TenantAwareEntity {
         this.moveOutDate = moveOutDate;
     }
 
-    public ResidentStatus getStatus() {
+    public Resident.ResidentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ResidentStatus status) {
+    public void setStatus(Resident.ResidentStatus status) {
         this.status = status;
     }
 

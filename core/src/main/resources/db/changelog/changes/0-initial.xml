@@ -1,0 +1,506 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="saidur" id="1766838760012-1">
+        <createTable tableName="amenities">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="amenitiesPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="advance_booking_days" type="INTEGER"/>
+            <column name="booking_duration_minutes" type="INTEGER"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="is_bookable" type="BOOLEAN"/>
+            <column name="location" type="VARCHAR(200)"/>
+            <column name="max_capacity" type="INTEGER"/>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(1000)"/>
+            <column name="operating_hours" type="VARCHAR(500)"/>
+            <column name="requires_approval" type="BOOLEAN"/>
+            <column name="rules" type="VARCHAR(1000)"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-2">
+        <createTable tableName="amenity_bookings">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="amenity_bookingsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amenity_id" type="BIGINT"/>
+            <column name="approved_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="approved_by_id" type="BIGINT"/>
+            <column name="booking_reference" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cancellation_reason" type="VARCHAR(500)"/>
+            <column name="cancelled_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="end_time" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(1000)"/>
+            <column name="number_of_guests" type="INTEGER"/>
+            <column name="purpose" type="VARCHAR(1000)"/>
+            <column name="rejection_reason" type="VARCHAR(500)"/>
+            <column name="resident_id" type="BIGINT"/>
+            <column name="special_requests" type="VARCHAR(1000)"/>
+            <column name="start_time" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-3">
+        <createTable tableName="announcements">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="announcementsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attachment_url" type="VARCHAR(500)"/>
+            <column name="content" type="VARCHAR(5000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by_id" type="BIGINT"/>
+            <column name="expires_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="is_pinned" type="BOOLEAN"/>
+            <column name="is_published" type="BOOLEAN"/>
+            <column name="priority" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="published_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="target_audience" type="VARCHAR(100)"/>
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-4">
+        <createTable tableName="apartments">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="apartmentsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="apartment_number" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bathrooms" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bedrooms" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="building_id" type="BIGINT"/>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="floor" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rent_amount" type="numeric(10, 2)"/>
+            <column name="square_footage" type="numeric(10, 2)"/>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-5">
+        <createTable tableName="buildings">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="buildingsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(500)"/>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_floors" type="INTEGER"/>
+            <column name="total_units" type="INTEGER"/>
+            <column name="year_built" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-6">
+        <createTable tableName="invoices">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="invoicesPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="due_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="invoice_number" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="issue_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="late_fees" type="numeric(10, 2)"/>
+            <column name="lease_id" type="BIGINT"/>
+            <column name="maintenance_charges" type="numeric(10, 2)"/>
+            <column name="notes" type="VARCHAR(1000)"/>
+            <column name="other_charges" type="numeric(10, 2)"/>
+            <column name="paid_amount" type="numeric(10, 2)"/>
+            <column name="paid_date" type="date"/>
+            <column name="rent_amount" type="numeric(10, 2)"/>
+            <column name="resident_id" type="BIGINT"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_amount" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="utility_charges" type="numeric(10, 2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-7">
+        <createTable tableName="leases">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="leasesPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="apartment_id" type="BIGINT"/>
+            <column name="end_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="monthly_rent" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(1000)"/>
+            <column name="payment_due_day" type="INTEGER"/>
+            <column name="primary_resident_id" type="BIGINT"/>
+            <column name="security_deposit" type="numeric(10, 2)"/>
+            <column name="signed_date" type="date"/>
+            <column name="special_clauses" type="VARCHAR(2000)"/>
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="termination_date" type="date"/>
+            <column name="termination_reason" type="VARCHAR(1000)"/>
+            <column name="terms_conditions" type="VARCHAR(5000)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-8">
+        <createTable tableName="maintenance_requests">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="maintenance_requestsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="apartment_id" type="BIGINT"/>
+            <column name="assigned_to_id" type="BIGINT"/>
+            <column name="category" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="completed_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="description" type="VARCHAR(2000)"/>
+            <column name="notes" type="VARCHAR(1000)"/>
+            <column name="priority" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_number" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="requested_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resident_id" type="BIGINT"/>
+            <column name="resolution_notes" type="VARCHAR(2000)"/>
+            <column name="scheduled_date" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-9">
+        <createTable tableName="payments">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="paymentsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="invoice_id" type="BIGINT"/>
+            <column name="notes" type="VARCHAR(1000)"/>
+            <column name="payment_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_method" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_reference" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refund_amount" type="numeric(10, 2)"/>
+            <column name="refund_date" type="date"/>
+            <column name="refund_reason" type="VARCHAR(500)"/>
+            <column name="resident_id" type="BIGINT"/>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_id" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-10">
+        <createTable tableName="residents">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="residentsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="date"/>
+            <column name="email" type="VARCHAR(150)"/>
+            <column name="emergency_contact_name" type="VARCHAR(100)"/>
+            <column name="emergency_contact_phone" type="VARCHAR(20)"/>
+            <column name="emergency_contact_relationship" type="VARCHAR(50)"/>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_primary_resident" type="BOOLEAN"/>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="move_in_date" type="date"/>
+            <column name="move_out_date" type="date"/>
+            <column name="national_id" type="VARCHAR(50)"/>
+            <column name="nationality" type="VARCHAR(100)"/>
+            <column name="notes" type="VARCHAR(500)"/>
+            <column name="passport_expiry_date" type="date"/>
+            <column name="passport_number" type="VARCHAR(50)"/>
+            <column name="phone_number" type="VARCHAR(20)"/>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+            <column name="apartment_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-11">
+        <createTable tableName="roles">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="rolesPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-12">
+        <createTable tableName="tenants">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tenantsPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="name" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tenant_key" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-13">
+        <createTable tableName="user_roles">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_rolesPK"/>
+            </column>
+            <column name="role_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_rolesPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-14">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP(6) WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="tenant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-15">
+        <addUniqueConstraint columnNames="booking_reference" constraintName="UC_AMENITY_BOOKINGSBOOKING_REFERENCE_COL" tableName="amenity_bookings"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-16">
+        <addUniqueConstraint columnNames="invoice_number" constraintName="UC_INVOICESINVOICE_NUMBER_COL" tableName="invoices"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-17">
+        <addUniqueConstraint columnNames="request_number" constraintName="UC_MAINTENANCE_REQUESTSREQUEST_NUMBER_COL" tableName="maintenance_requests"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-18">
+        <addUniqueConstraint columnNames="payment_reference" constraintName="UC_PAYMENTSPAYMENT_REFERENCE_COL" tableName="payments"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-19">
+        <addUniqueConstraint columnNames="email" constraintName="UC_RESIDENTSEMAIL_COL" tableName="residents"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-20">
+        <addUniqueConstraint columnNames="name" constraintName="UC_ROLESNAME_COL" tableName="roles"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-21">
+        <addUniqueConstraint columnNames="tenant_key" constraintName="UC_TENANTSTENANT_KEY_COL" tableName="tenants"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-22">
+        <addUniqueConstraint columnNames="email, tenant_id" constraintName="UKdms6tsnbugy9927cn4kwci01a" tableName="users"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-23">
+        <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="announcements" constraintName="FK2xq7ufsyexvej4l6ld869ddxy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-24">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="maintenance_requests" constraintName="FK8kfnysuua0emnbeku9vt5hg5e" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-25">
+        <addForeignKeyConstraint baseColumnNames="primary_resident_id" baseTableName="leases" constraintName="FK8lqyu3dwfacb5jllcekxi1plj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-26">
+        <addForeignKeyConstraint baseColumnNames="amenity_id" baseTableName="amenity_bookings" constraintName="FKb7nbok395fdrpl83s9tqa7nq5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="amenities" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-27">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="amenity_bookings" constraintName="FKcfge76xwne2ncfwj1lppn93dp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-28">
+        <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="leases" constraintName="FKdgpj3p58xww6n3xua0jlnv3pi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-29">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="residents" constraintName="FKg38luqcgm3qqs0s9lgjdfl9ov" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-30">
+        <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="residents" constraintName="FKgq3b1iv87p9nhnpvw6yrbwj14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-31">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles" constraintName="FKh8ciramu9cc9q3qcqiv4ue8a6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-32">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="FKhfh9dx7w3ubf1co1vdev94g3f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-33">
+        <addForeignKeyConstraint baseColumnNames="assigned_to_id" baseTableName="maintenance_requests" constraintName="FKirs2mjqoaxkdf48bfhheqrgd9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-34">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="invoices" constraintName="FKl97x2bloi4vesrw985f7t0xmp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-35">
+        <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="maintenance_requests" constraintName="FKmb347t12gni1j3d46bhfbt722" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-36">
+        <addForeignKeyConstraint baseColumnNames="approved_by_id" baseTableName="amenity_bookings" constraintName="FKng8vf7qqm33vax5mf8v320uan" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-37">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="payments" constraintName="FKoant83d80a2ryjuco84n0yus8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-38">
+        <addForeignKeyConstraint baseColumnNames="lease_id" baseTableName="invoices" constraintName="FKpwe953gt2h98vy2ltefsugr82" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="leases" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-39">
+        <addForeignKeyConstraint baseColumnNames="building_id" baseTableName="apartments" constraintName="FKr2gnfdtdjbc8uyss7rlsf9jxk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="buildings" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766838760012-40">
+        <addForeignKeyConstraint baseColumnNames="invoice_id" baseTableName="payments" constraintName="FKrbqec6be74wab8iifh8g3i50i" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="invoices" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

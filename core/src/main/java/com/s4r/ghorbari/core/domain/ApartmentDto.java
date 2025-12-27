@@ -1,67 +1,63 @@
-package com.s4r.ghorbari.core.entity;
+package com.s4r.ghorbari.core.domain;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.s4r.ghorbari.core.entity.Apartment;
+
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "apartments")
-public class Apartment extends TenantAwareEntity {
+public class ApartmentDto {
 
-    @NotBlank(message = "Apartment number is required")
-    @Size(max = 50)
-    @Column(nullable = false, length = 50)
+    private Long id;
     private String apartmentNumber;
-
-    @Column(name = "building_id")
     private Long buildingId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id", insertable = false, updatable = false)
-    private Building building;
-
-    @Column(nullable = false)
     private Integer floor;
-
-    @Column(nullable = false)
     private Integer bedrooms;
-
-    @Column(nullable = false)
     private Integer bathrooms;
-
-    @Column(precision = 10, scale = 2)
     private BigDecimal squareFootage;
-
-    @Column(precision = 10, scale = 2)
     private BigDecimal rentAmount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private ApartmentStatus status = ApartmentStatus.VACANT;
-
-    @Size(max = 500)
-    @Column(length = 500)
+    private Apartment.ApartmentStatus status;
     private String description;
 
-    public Apartment() {
+    // Constructors
+    public ApartmentDto() {
     }
 
-    public Apartment(String apartmentNumber, Integer floor, Integer bedrooms, Integer bathrooms) {
-        this.apartmentNumber = apartmentNumber;
-        this.floor = floor;
-        this.bedrooms = bedrooms;
-        this.bathrooms = bathrooms;
+    public ApartmentDto(Apartment apartment) {
+        this.id = apartment.getId();
+        this.apartmentNumber = apartment.getApartmentNumber();
+        this.buildingId = apartment.getBuildingId();
+        this.floor = apartment.getFloor();
+        this.bedrooms = apartment.getBedrooms();
+        this.bathrooms = apartment.getBathrooms();
+        this.squareFootage = apartment.getSquareFootage();
+        this.rentAmount = apartment.getRentAmount();
+        this.status = apartment.getStatus();
+        this.description = apartment.getDescription();
     }
 
-    public enum ApartmentStatus {
-        VACANT,
-        OCCUPIED,
-        MAINTENANCE,
-        RESERVED
+    public Apartment toEntity() {
+        Apartment apartment = new Apartment();
+        apartment.setId(this.id);
+        apartment.setApartmentNumber(this.apartmentNumber);
+        apartment.setBuildingId(this.buildingId);
+        apartment.setFloor(this.floor);
+        apartment.setBedrooms(this.bedrooms);
+        apartment.setBathrooms(this.bathrooms);
+        apartment.setSquareFootage(this.squareFootage);
+        apartment.setRentAmount(this.rentAmount);
+        apartment.setStatus(this.status);
+        apartment.setDescription(this.description);
+        return apartment;
     }
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getApartmentNumber() {
         return apartmentNumber;
     }
@@ -76,14 +72,6 @@ public class Apartment extends TenantAwareEntity {
 
     public void setBuildingId(Long buildingId) {
         this.buildingId = buildingId;
-    }
-
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
     }
 
     public Integer getFloor() {
@@ -126,11 +114,11 @@ public class Apartment extends TenantAwareEntity {
         this.rentAmount = rentAmount;
     }
 
-    public ApartmentStatus getStatus() {
+    public Apartment.ApartmentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ApartmentStatus status) {
+    public void setStatus(Apartment.ApartmentStatus status) {
         this.status = status;
     }
 
