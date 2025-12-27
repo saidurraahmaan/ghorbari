@@ -26,7 +26,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void createBuilding(BuildingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -34,6 +34,7 @@ public class BuildingService implements IBuildingService {
         }
         Building building = dto.toEntity();
         building.setTenantId(tenantId);
+        building.setStatus(Building.BuildingStatus.ACTIVE);
         buildingRepository.save(building);
     }
 
@@ -70,7 +71,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateBuilding(Long id, BuildingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -87,7 +88,7 @@ public class BuildingService implements IBuildingService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void deleteBuilding(Long id) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
