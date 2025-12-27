@@ -35,7 +35,7 @@ public class ApartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<Void> createApartment(@RequestBody Apartment apartment) {
+    public ResponseEntity<?> createApartment(@RequestBody Apartment apartment) {
         apartmentService.createApartment(apartment);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -86,7 +86,7 @@ public class ApartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateApartment(
+    public ResponseEntity<?> updateApartment(
             @Parameter(description = "Apartment ID") @PathVariable Long id,
             @RequestBody Apartment apartment) {
         apartment.setId(id);
@@ -101,7 +101,7 @@ public class ApartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteApartment(
+    public ResponseEntity<?> deleteApartment(
             @Parameter(description = "Apartment ID") @PathVariable Long id) {
         apartmentService.deleteApartment(id);
         return ResponseEntity.noContent().build();

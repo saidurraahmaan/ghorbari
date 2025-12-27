@@ -5,6 +5,7 @@ import com.s4r.ghorbari.core.service.IUserService;
 import com.s4r.ghorbari.web.dto.JwtResponse;
 import com.s4r.ghorbari.web.dto.LoginRequest;
 import com.s4r.ghorbari.web.dto.RegisterRequest;
+import com.s4r.ghorbari.web.dto.UserInfoResponse;
 import com.s4r.ghorbari.web.exception.ErrorResponse;
 import com.s4r.ghorbari.web.exception.UnauthorizedException;
 import com.s4r.ghorbari.web.security.IJwtUtils;
@@ -102,7 +103,7 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         userService.registerUser(
                 registerRequest.getUsername(),
                 registerRequest.getEmail(),
@@ -117,22 +118,20 @@ public class AuthController {
             security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User information retrieved",
-                    content = @Content(schema = @Schema(implementation = JwtResponse.class))),
+                    content = @Content(schema = @Schema(implementation = UserInfoResponse.class))),
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/me")
-    public ResponseEntity<JwtResponse> getCurrentUser() {
+    public ResponseEntity<?> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl) {
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl userDetails) {
 
             Set<String> roles = userDetails.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
 
-            return ResponseEntity.ok(new JwtResponse(
-                    null,
+            return ResponseEntity.ok(new UserInfoResponse(
                     userDetails.id(),
                     userDetails.getUsername(),
                     userDetails.email(),
