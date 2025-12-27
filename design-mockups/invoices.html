@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoices - Ghorbari</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#EFF6FF',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar (simplified) -->
+        <aside class="w-64 bg-white border-r border-gray-200">
+            <div class="h-16 flex items-center px-6 border-b border-gray-200">
+                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <span class="font-semibold text-gray-900">Ghorbari</span>
+            </div>
+            <nav class="px-4 py-4 space-y-1">
+                <a href="dashboard.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Dashboard</a>
+                <a href="buildings.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Buildings</a>
+                <a href="apartments.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Apartments</a>
+                <a href="residents.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Residents</a>
+                <a href="create-lease.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Leases</a>
+                <a href="invoices.html" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-primary-500 rounded-lg">Finances</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Header -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+                <h1 class="text-xl font-semibold text-gray-900">Finances</h1>
+                <div class="flex items-center space-x-3">
+                    <button class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-medium">AU</button>
+                </div>
+            </header>
+
+            <!-- Tabs -->
+            <div class="bg-white border-b border-gray-200 px-6">
+                <nav class="flex space-x-8">
+                    <button class="px-1 py-4 text-sm font-medium text-primary-600 border-b-2 border-primary-600">
+                        Invoices
+                    </button>
+                    <button class="px-1 py-4 text-sm font-medium text-gray-600 hover:text-gray-900">
+                        Payments
+                    </button>
+                    <button class="px-1 py-4 text-sm font-medium text-gray-600 hover:text-gray-900">
+                        Reports
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <button class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg">
+                            + Create Invoice
+                        </button>
+                        <button class="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-medium rounded-lg">
+                            Export
+                        </button>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                placeholder="Search invoices..."
+                                class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500"
+                            />
+                            <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg text-sm">
+                            <option>All Status</option>
+                            <option>Paid</option>
+                            <option>Pending</option>
+                            <option>Overdue</option>
+                        </select>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg text-sm">
+                            <option>This Month</option>
+                            <option>Last Month</option>
+                            <option>This Year</option>
+                            <option>All Time</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Filter Badges -->
+                <div class="flex items-center space-x-3 mt-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                        <span class="w-2 h-2 bg-green-600 rounded-full mr-2"></span>
+                        Paid: 135
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                        <span class="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                        Pending: 12
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                        <span class="w-2 h-2 bg-red-600 rounded-full mr-2"></span>
+                        Overdue: 3
+                    </span>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+
+                <!-- Invoices Table -->
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Invoice #
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Resident
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Unit
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Date
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Due Date
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Amount
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status
+                                    </th>
+                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Paid Invoice -->
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">INV-001</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">John Doe</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">102</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">$1,200</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Paid
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <button class="text-primary-600 hover:text-primary-900" onclick="document.getElementById('invoiceModal').classList.remove('hidden')">View</button>
+                                    </td>
+                                </tr>
+
+                                <!-- Pending Invoice -->
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">INV-003</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Mike Johnson</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">201</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">$2,400</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <button class="text-primary-600 hover:text-primary-900">View</button>
+                                    </td>
+                                </tr>
+
+                                <!-- Overdue Invoice -->
+                                <tr class="hover:bg-gray-50 bg-red-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">INV-005</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Tom Wilson</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">301</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-red-600 font-medium">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">$1,950</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                            Overdue
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <button class="text-primary-600 hover:text-primary-900">View</button>
+                                    </td>
+                                </tr>
+
+                                <!-- More rows... -->
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">INV-004</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">Emma Collins</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">5B</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-600">Jan 1, 2025</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">$2,600</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Paid
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <button class="text-primary-600 hover:text-primary-900">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Summary Footer -->
+                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="text-gray-600">
+                                Showing 1-10 of 150 invoices
+                            </div>
+                            <div class="font-semibold text-gray-900">
+                                Total: $195,200
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="bg-white px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50" disabled>
+                                ← Previous
+                            </button>
+                            <button class="px-3 py-2 bg-primary-500 text-white rounded-lg text-sm font-medium">1</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">2</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">3</button>
+                            <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                Next →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Invoice Detail Modal -->
+    <div id="invoiceModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-8 border w-3/4 max-w-4xl shadow-2xl rounded-lg bg-white">
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-4 border-b">
+                <h3 class="text-2xl font-semibold text-gray-900">Invoice #INV-005</h3>
+                <div class="flex items-center space-x-3">
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg">
+                        Download PDF
+                    </button>
+                    <button onclick="document.getElementById('invoiceModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Invoice Content -->
+            <div class="mt-6">
+
+                <!-- Status Badge -->
+                <div class="mb-6">
+                    <span class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-red-100 text-red-800 border-2 border-red-300">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        OVERDUE - 5 days past due
+                    </span>
+                </div>
+
+                <!-- Bill To / From -->
+                <div class="grid grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">Bill To:</h4>
+                        <div class="text-gray-900">
+                            <p class="font-semibold text-lg">Tom Wilson</p>
+                            <p class="text-sm">Unit 301, Building A</p>
+                            <p class="text-sm">tom.wilson@email.com</p>
+                            <p class="text-sm">(555) 987-6543</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-500 uppercase mb-2">From:</h4>
+                        <div class="text-gray-900">
+                            <p class="font-semibold text-lg">Sunrise Towers Management</p>
+                            <p class="text-sm">123 Main Street</p>
+                            <p class="text-sm">New York, NY 10001</p>
+                            <p class="text-sm">Tax ID: 12-3456789</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Invoice Details -->
+                <div class="grid grid-cols-3 gap-6 mb-8 p-4 bg-gray-50 rounded-lg">
+                    <div>
+                        <p class="text-sm text-gray-500">Invoice Date</p>
+                        <p class="font-semibold text-gray-900">January 1, 2025</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Due Date</p>
+                        <p class="font-semibold text-red-600">January 1, 2025</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Invoice #</p>
+                        <p class="font-semibold text-gray-900">INV-005</p>
+                    </div>
+                </div>
+
+                <!-- Line Items -->
+                <div class="mb-8">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50 border-y border-gray-200">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Description</th>
+                                <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Qty</th>
+                                <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Rate</th>
+                                <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-4 py-4 text-sm text-gray-900">Monthly Rent - January 2025</td>
+                                <td class="px-4 py-4 text-sm text-right text-gray-600">1</td>
+                                <td class="px-4 py-4 text-sm text-right text-gray-600">$1,950.00</td>
+                                <td class="px-4 py-4 text-sm text-right font-medium text-gray-900">$1,950.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Totals -->
+                <div class="flex justify-end">
+                    <div class="w-64 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-medium text-gray-900">$1,950.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Tax</span>
+                            <span class="font-medium text-gray-900">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-semibold pt-2 border-t">
+                            <span class="text-gray-900">Total Due</span>
+                            <span class="text-red-600">$1,950.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment History -->
+                <div class="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-2">Payment History</h4>
+                    <p class="text-sm text-gray-600">No payments recorded for this invoice</p>
+                </div>
+
+                <!-- Reminders -->
+                <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-2">Reminders Sent</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• Jan 3, 2025 - First reminder sent</li>
+                        <li>• Jan 6, 2025 - Second reminder sent</li>
+                    </ul>
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-8 flex items-center justify-end space-x-3 pt-6 border-t">
+                    <button class="px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        Send Reminder
+                    </button>
+                    <button class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg">
+                        Record Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
