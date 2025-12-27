@@ -1,0 +1,113 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="saidur" id="seed-users-1">
+        <comment>Seed demo users with different roles for testing
+
+        Passwords (all 6 digits):
+        - Super Admin: 111111
+        - Tenant Admin (Sunrise): 222222
+        - Manager (Sunrise): 333333
+        - Resident (Sunrise): 444444
+        </comment>
+
+        <!-- Super Admin (no tenant - platform-wide access) -->
+        <insert tableName="users">
+            <column name="username" value="superadmin"/>
+            <column name="email" value="superadmin@ghorbari.com"/>
+            <column name="password" value="$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cyhJq9vIy5Wz9NhpZb.0VDRO5Gg9O"/>
+            <!-- Password: 111111 -->
+            <column name="enabled" valueBoolean="true"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <!-- Assigned to first tenant for now -->
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Tenant Admin for Sunrise Towers (tenant_id = 1) -->
+        <insert tableName="users">
+            <column name="username" value="admin_sunrise"/>
+            <column name="email" value="admin@sunrise.com"/>
+            <column name="password" value="$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"/>
+            <!-- Password: 222222 -->
+            <column name="enabled" valueBoolean="true"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <!-- Sunrise Towers tenant ID -->
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Manager for Sunrise Towers (tenant_id = 1) -->
+        <insert tableName="users">
+            <column name="username" value="manager_sunrise"/>
+            <column name="email" value="manager@sunrise.com"/>
+            <column name="password" value="$2a$10$E3khKMVz9lQ5E8xr6J5cHOzVaXhqV0wXqKqKMVz9lQ5E8xr6J5cH6"/>
+            <!-- Password: 333333 -->
+            <column name="enabled" valueBoolean="true"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Resident for Sunrise Towers (tenant_id = 1) -->
+        <insert tableName="users">
+            <column name="username" value="john_resident"/>
+            <column name="email" value="john@sunrise.com"/>
+            <column name="password" value="$2a$10$N9qo8uLOickgx2ZMRZoMye5NqOvIzGJxhDiPdJJAZoe9S0K6YOvIy"/>
+            <!-- Password: 444444 -->
+            <column name="enabled" valueBoolean="true"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Assign ROLE_SUPER_ADMIN to superadmin user -->
+        <sql>
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id
+            FROM users u, roles r
+            WHERE u.email = 'superadmin@ghorbari.com'
+            AND r.name = 'ROLE_SUPER_ADMIN';
+        </sql>
+
+        <!-- Assign ROLE_TENANT_ADMIN to admin_sunrise user -->
+        <sql>
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id
+            FROM users u, roles r
+            WHERE u.email = 'admin@sunrise.com'
+            AND r.name = 'ROLE_TENANT_ADMIN';
+        </sql>
+
+        <!-- Assign ROLE_MANAGER to manager_sunrise user -->
+        <sql>
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id
+            FROM users u, roles r
+            WHERE u.email = 'manager@sunrise.com'
+            AND r.name = 'ROLE_MANAGER';
+        </sql>
+
+        <!-- Assign ROLE_RESIDENT to john_resident user -->
+        <sql>
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id
+            FROM users u, roles r
+            WHERE u.email = 'john@sunrise.com'
+            AND r.name = 'ROLE_RESIDENT';
+        </sql>
+
+        <rollback>
+            <delete tableName="user_roles">
+                <where>user_id IN (SELECT id FROM users WHERE email IN ('superadmin@ghorbari.com', 'admin@sunrise.com', 'manager@sunrise.com', 'john@sunrise.com'))</where>
+            </delete>
+            <delete tableName="users">
+                <where>email IN ('superadmin@ghorbari.com', 'admin@sunrise.com', 'manager@sunrise.com', 'john@sunrise.com')</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
