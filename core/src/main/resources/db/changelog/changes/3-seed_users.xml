@@ -18,8 +18,8 @@
         <insert tableName="users">
             <column name="username" value="superadmin"/>
             <column name="email" value="superadmin@ghorbari.com"/>
-            <column name="password" value="$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cyhJq9vIy5Wz9NhpZb.0VDRO5Gg9O"/>
-            <!-- Password: 111111 -->
+            <column name="password" value="$2a$10$/p5tZ8WqpEpH5y8d7w49Zuw5xXH.M1bBA7FxlU6GiKTs8tb1cpZ5G"/>
+            <!-- Password: 111111 (BCrypt hash generated) -->
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <!-- Assigned to first tenant for now -->
@@ -31,8 +31,8 @@
         <insert tableName="users">
             <column name="username" value="admin_sunrise"/>
             <column name="email" value="admin@sunrise.com"/>
-            <column name="password" value="$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"/>
-            <!-- Password: 222222 -->
+            <column name="password" value="$2a$10$TA1yoTu8a4fyCYaeQcc16eQOCfHV.hinfFPZOQtcoY6S/eTIfiIbq"/>
+            <!-- Password: 222222 (BCrypt hash generated) -->
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <!-- Sunrise Towers tenant ID -->
@@ -44,8 +44,8 @@
         <insert tableName="users">
             <column name="username" value="manager_sunrise"/>
             <column name="email" value="manager@sunrise.com"/>
-            <column name="password" value="$2a$10$E3khKMVz9lQ5E8xr6J5cHOzVaXhqV0wXqKqKMVz9lQ5E8xr6J5cH6"/>
-            <!-- Password: 333333 -->
+            <column name="password" value="$2a$10$tCPtN5dtVbSyOyQpHI.iMOqsd.YLHmA6uHYFofjFTn6cdHGDaNBCW"/>
+            <!-- Password: 333333 (BCrypt hash generated) -->
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
@@ -56,8 +56,8 @@
         <insert tableName="users">
             <column name="username" value="john_resident"/>
             <column name="email" value="john@sunrise.com"/>
-            <column name="password" value="$2a$10$N9qo8uLOickgx2ZMRZoMye5NqOvIzGJxhDiPdJJAZoe9S0K6YOvIy"/>
-            <!-- Password: 444444 -->
+            <column name="password" value="$2a$10$aFVE7X5tS1IXG9EF1ht4LumOj9y.Bx3sIlGKYDHelktUlLXF0m9da"/>
+            <!-- Password: 444444 (BCrypt hash generated) -->
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
