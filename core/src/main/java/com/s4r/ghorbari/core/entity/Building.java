@@ -3,6 +3,9 @@ package com.s4r.ghorbari.core.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "buildings")
 public class Building extends TenantAwareEntity {
@@ -29,6 +32,14 @@ public class Building extends TenantAwareEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BuildingStatus status = BuildingStatus.ACTIVE;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "building_managers",
+        joinColumns = @JoinColumn(name = "building_id"),
+        inverseJoinColumns = @JoinColumn(name = "manager_id")
+    )
+    private Set<User> managers = new HashSet<>();
 
     public enum BuildingStatus {
         ACTIVE,
@@ -101,5 +112,21 @@ public class Building extends TenantAwareEntity {
 
     public void setStatus(BuildingStatus status) {
         this.status = status;
+    }
+
+    public Set<User> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(Set<User> managers) {
+        this.managers = managers;
+    }
+
+    public void addManager(User manager) {
+        this.managers.add(manager);
+    }
+
+    public void removeManager(User manager) {
+        this.managers.remove(manager);
     }
 }

@@ -1,6 +1,11 @@
 package com.s4r.ghorbari.core.domain;
 
 import com.s4r.ghorbari.core.entity.Building;
+import com.s4r.ghorbari.core.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BuildingDto {
 
@@ -12,6 +17,46 @@ public class BuildingDto {
     private Integer yearBuilt;
     private String description;
     private Building.BuildingStatus status;
+    private List<ManagerInfo> managers = new ArrayList<>();
+
+    public static class ManagerInfo {
+        private Long managerId;
+        private String managerName;
+        private String email;
+
+        public ManagerInfo() {
+        }
+
+        public ManagerInfo(User manager) {
+            this.managerId = manager.getId();
+            this.managerName = manager.getFirstName() + " " + manager.getLastName();
+            this.email = manager.getEmail();
+        }
+
+        public Long getManagerId() {
+            return managerId;
+        }
+
+        public void setManagerId(Long managerId) {
+            this.managerId = managerId;
+        }
+
+        public String getManagerName() {
+            return managerName;
+        }
+
+        public void setManagerName(String managerName) {
+            this.managerName = managerName;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+    }
 
     // Constructors
     public BuildingDto() {
@@ -26,6 +71,11 @@ public class BuildingDto {
         this.yearBuilt = building.getYearBuilt();
         this.description = building.getDescription();
         this.status = building.getStatus();
+        if (building.getManagers() != null) {
+            this.managers = building.getManagers().stream()
+                    .map(ManagerInfo::new)
+                    .collect(Collectors.toList());
+        }
     }
 
     public Building toEntity() {
@@ -104,5 +154,13 @@ public class BuildingDto {
 
     public void setStatus(Building.BuildingStatus status) {
         this.status = status;
+    }
+
+    public List<ManagerInfo> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<ManagerInfo> managers) {
+        this.managers = managers;
     }
 }

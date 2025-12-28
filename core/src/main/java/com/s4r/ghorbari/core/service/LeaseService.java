@@ -120,8 +120,37 @@ public class LeaseService implements ILeaseService {
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Lease not found"));
 
         lease.setEndDate(newEndDate);
-        lease.setStatus(Lease.LeaseStatus.RENEWED);
+        lease.setStatus(Lease.LeaseStatus.ACTIVE);
         leaseRepository.save(lease);
+    }
+
+    @Override
+    public void giveNotice(Long id, LocalDate noticeDate) {
+        Lease lease = leaseRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Lease not found"));
+
+        if (lease.getLeaseType() != Lease.LeaseType.MONTH_TO_MONTH) {
+            throw new ServiceException(ErrorCode.INVALID_OPERATION, "Can only give notice for month-to-month leases");
+        }
+
+        lease.setNoticeGivenDate(noticeDate);
+        lease.setStatus(Lease.LeaseStatus.TERMINATED);
+        leaseRepository.save(lease);
+    }
+
+    @Override
+    public LocalDate calculateExpectedMoveOutDate(Long id) {
+        Lease lease = leaseRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Lease not found"));
+
+        if (lease.getLeaseType() == Lease.LeaseType.MONTH_TO_MONTH && lease.getNoticeGivenDate() != null) {
+            int noticeMonths = lease.getNoticePeriodMonths() != null ? lease.getNoticePeriodMonths() : 2;
+            return lease.getNoticeGivenDate().plusMonths(noticeMonths);
+        } else if (lease.getLeaseType() == Lease.LeaseType.FIXED_TERM) {
+            return lease.getEndDate();
+        }
+
+        return null; // Active month-to-month with no notice given
     }
 
     @Override

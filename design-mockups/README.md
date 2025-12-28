@@ -113,6 +113,17 @@ Based on 8px grid system:
 - Lease status and dates
 - Search and filtering
 
+### 6a. Add Resident Page (`add-resident.html`)
+- Comprehensive form for adding new residents
+- Sections: Personal Info, Identification, Emergency Contact, Residence Info, Additional Info
+- Form validation (required fields marked with *)
+- Personal Information: First name, last name, email, phone, date of birth, nationality
+- Identification: National ID, passport number, passport expiry
+- Emergency Contact: Contact name, phone, relationship
+- Residence: Apartment assignment (optional), move-in date, status, primary resident checkbox
+- Summary preview card
+- Save as Draft and Create buttons
+
 ### 7. Create Lease Page (`create-lease.html`)
 - Multi-step wizard interface
 - Step 1: Unit & Resident Selection

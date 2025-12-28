@@ -10,15 +10,15 @@ public class LeaseDto {
     private Long id;
     private Long apartmentId;
     private Long primaryResidentId;
+    private Lease.LeaseType leaseType;
     private LocalDate startDate;
     private LocalDate endDate;
+    private Integer noticePeriodMonths;
+    private Integer advancePaymentMonths;
+    private LocalDate noticeGivenDate;
     private BigDecimal monthlyRent;
     private BigDecimal securityDeposit;
-    private Integer paymentDueDay;
     private Lease.LeaseStatus status;
-    private String termsConditions;
-    private String specialClauses;
-    private LocalDate signedDate;
     private LocalDate terminationDate;
     private String terminationReason;
     private String notes;
@@ -31,15 +31,15 @@ public class LeaseDto {
         this.id = lease.getId();
         this.apartmentId = lease.getApartmentId();
         this.primaryResidentId = lease.getPrimaryResidentId();
+        this.leaseType = lease.getLeaseType();
         this.startDate = lease.getStartDate();
         this.endDate = lease.getEndDate();
+        this.noticePeriodMonths = lease.getNoticePeriodMonths();
+        this.advancePaymentMonths = lease.getAdvancePaymentMonths();
+        this.noticeGivenDate = lease.getNoticeGivenDate();
         this.monthlyRent = lease.getMonthlyRent();
         this.securityDeposit = lease.getSecurityDeposit();
-        this.paymentDueDay = lease.getPaymentDueDay();
         this.status = lease.getStatus();
-        this.termsConditions = lease.getTermsConditions();
-        this.specialClauses = lease.getSpecialClauses();
-        this.signedDate = lease.getSignedDate();
         this.terminationDate = lease.getTerminationDate();
         this.terminationReason = lease.getTerminationReason();
         this.notes = lease.getNotes();
@@ -50,15 +50,15 @@ public class LeaseDto {
         lease.setId(this.id);
         lease.setApartmentId(this.apartmentId);
         lease.setPrimaryResidentId(this.primaryResidentId);
+        lease.setLeaseType(this.leaseType);
         lease.setStartDate(this.startDate);
         lease.setEndDate(this.endDate);
+        lease.setNoticePeriodMonths(this.noticePeriodMonths);
+        lease.setAdvancePaymentMonths(this.advancePaymentMonths);
+        lease.setNoticeGivenDate(this.noticeGivenDate);
         lease.setMonthlyRent(this.monthlyRent);
         lease.setSecurityDeposit(this.securityDeposit);
-        lease.setPaymentDueDay(this.paymentDueDay);
         lease.setStatus(this.status);
-        lease.setTermsConditions(this.termsConditions);
-        lease.setSpecialClauses(this.specialClauses);
-        lease.setSignedDate(this.signedDate);
         lease.setTerminationDate(this.terminationDate);
         lease.setTerminationReason(this.terminationReason);
         lease.setNotes(this.notes);
@@ -98,12 +98,44 @@ public class LeaseDto {
         this.startDate = startDate;
     }
 
+    public Lease.LeaseType getLeaseType() {
+        return leaseType;
+    }
+
+    public void setLeaseType(Lease.LeaseType leaseType) {
+        this.leaseType = leaseType;
+    }
+
     public LocalDate getEndDate() {
         return endDate;
     }
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Integer getNoticePeriodMonths() {
+        return noticePeriodMonths;
+    }
+
+    public void setNoticePeriodMonths(Integer noticePeriodMonths) {
+        this.noticePeriodMonths = noticePeriodMonths;
+    }
+
+    public Integer getAdvancePaymentMonths() {
+        return advancePaymentMonths;
+    }
+
+    public void setAdvancePaymentMonths(Integer advancePaymentMonths) {
+        this.advancePaymentMonths = advancePaymentMonths;
+    }
+
+    public LocalDate getNoticeGivenDate() {
+        return noticeGivenDate;
+    }
+
+    public void setNoticeGivenDate(LocalDate noticeGivenDate) {
+        this.noticeGivenDate = noticeGivenDate;
     }
 
     public BigDecimal getMonthlyRent() {
@@ -122,44 +154,12 @@ public class LeaseDto {
         this.securityDeposit = securityDeposit;
     }
 
-    public Integer getPaymentDueDay() {
-        return paymentDueDay;
-    }
-
-    public void setPaymentDueDay(Integer paymentDueDay) {
-        this.paymentDueDay = paymentDueDay;
-    }
-
     public Lease.LeaseStatus getStatus() {
         return status;
     }
 
     public void setStatus(Lease.LeaseStatus status) {
         this.status = status;
-    }
-
-    public String getTermsConditions() {
-        return termsConditions;
-    }
-
-    public void setTermsConditions(String termsConditions) {
-        this.termsConditions = termsConditions;
-    }
-
-    public String getSpecialClauses() {
-        return specialClauses;
-    }
-
-    public void setSpecialClauses(String specialClauses) {
-        this.specialClauses = specialClauses;
-    }
-
-    public LocalDate getSignedDate() {
-        return signedDate;
-    }
-
-    public void setSignedDate(LocalDate signedDate) {
-        this.signedDate = signedDate;
     }
 
     public LocalDate getTerminationDate() {

@@ -116,6 +116,8 @@ public class AuthController {
                 registerRequest.getUsername(),
                 registerRequest.getEmail(),
                 passwordEncoder.encode(registerRequest.getPassword()),
+                registerRequest.getFirstName(),
+                registerRequest.getLastName(),
                 tenantId
         );
 

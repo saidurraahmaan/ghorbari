@@ -122,6 +122,53 @@ public class BuildingController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Assign manager to building", description = "Assign a manager (user with ROLE_MANAGER) to a building")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Manager assigned successfully"),
+            @ApiResponse(responseCode = "404", description = "Building or manager not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "400", description = "User does not have ROLE_MANAGER",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PostMapping("/{buildingId}/managers/{managerId}")
+    public ResponseEntity<?> assignManager(
+            @Parameter(description = "Building ID") @PathVariable Long buildingId,
+            @Parameter(description = "Manager User ID") @PathVariable Long managerId) {
+        buildingService.assignManagerToBuilding(buildingId, managerId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Remove manager from building", description = "Remove a manager from a building")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Manager removed successfully"),
+            @ApiResponse(responseCode = "404", description = "Building or manager not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @DeleteMapping("/{buildingId}/managers/{managerId}")
+    public ResponseEntity<?> removeManager(
+            @Parameter(description = "Building ID") @PathVariable Long buildingId,
+            @Parameter(description = "Manager User ID") @PathVariable Long managerId) {
+        buildingService.removeManagerFromBuilding(buildingId, managerId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get buildings by manager", description = "Retrieve all buildings managed by a specific manager")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Buildings retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/managers/{managerId}")
+    public ResponseEntity<List<BuildingDto>> getBuildingsByManager(
+            @Parameter(description = "Manager User ID") @PathVariable Long managerId) {
+        List<BuildingDto> buildings = buildingService.getBuildingsByManager(managerId);
+        return ResponseEntity.ok(buildings);
+    }
+
     private BuildingDto mapToDto(BuildingRequest request) {
         BuildingDto dto = new BuildingDto();
         dto.setName(request.getName());

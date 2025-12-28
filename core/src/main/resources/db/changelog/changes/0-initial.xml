@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="saidur" id="1766861086730-1">
+    <changeSet author="saidur" id="1766953947832-1">
         <createTable tableName="amenities">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="amenitiesPK"/>
@@ -33,7 +33,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-2">
+    <changeSet author="saidur" id="1766953947832-2">
         <createTable tableName="amenity_bookings">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="amenity_bookingsPK"/>
@@ -70,7 +70,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-3">
+    <changeSet author="saidur" id="1766953947832-3">
         <createTable tableName="announcements">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="announcementsPK"/>
@@ -103,7 +103,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-4">
+    <changeSet author="saidur" id="1766953947832-4">
         <createTable tableName="apartments">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="apartmentsPK"/>
@@ -129,14 +129,24 @@
             <column name="floor" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="rent_amount" type="numeric(10, 2)"/>
+            <column name="monthly_rent" type="numeric(10, 2)"/>
             <column name="square_footage" type="numeric(10, 2)"/>
             <column name="status" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-5">
+    <changeSet author="saidur" id="1766953947832-5">
+        <createTable tableName="building_managers">
+            <column name="building_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="building_managersPK"/>
+            </column>
+            <column name="manager_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="building_managersPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="saidur" id="1766953947832-6">
         <createTable tableName="buildings">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="buildingsPK"/>
@@ -161,7 +171,7 @@
             <column name="year_built" type="INTEGER"/>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-6">
+    <changeSet author="saidur" id="1766953947832-7">
         <createTable tableName="invoices">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="invoicesPK"/>
@@ -201,7 +211,7 @@
             <column name="utility_charges" type="numeric(10, 2)"/>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-7">
+    <changeSet author="saidur" id="1766953947832-8">
         <createTable tableName="leases">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="leasesPK"/>
@@ -213,19 +223,20 @@
             <column name="tenant_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="advance_payment_months" type="INTEGER"/>
             <column name="apartment_id" type="BIGINT"/>
-            <column name="end_date" type="date">
+            <column name="end_date" type="date"/>
+            <column name="lease_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="monthly_rent" type="numeric(10, 2)">
                 <constraints nullable="false"/>
             </column>
             <column name="notes" type="VARCHAR(1000)"/>
-            <column name="payment_due_day" type="INTEGER"/>
+            <column name="notice_given_date" type="date"/>
+            <column name="notice_period_months" type="INTEGER"/>
             <column name="primary_resident_id" type="BIGINT"/>
             <column name="security_deposit" type="numeric(10, 2)"/>
-            <column name="signed_date" type="date"/>
-            <column name="special_clauses" type="VARCHAR(2000)"/>
             <column name="start_date" type="date">
                 <constraints nullable="false"/>
             </column>
@@ -234,10 +245,9 @@
             </column>
             <column name="termination_date" type="date"/>
             <column name="termination_reason" type="VARCHAR(1000)"/>
-            <column name="terms_conditions" type="VARCHAR(5000)"/>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-8">
+    <changeSet author="saidur" id="1766953947832-9">
         <createTable tableName="maintenance_requests">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="maintenance_requestsPK"/>
@@ -277,7 +287,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-9">
+    <changeSet author="saidur" id="1766953947832-10">
         <createTable tableName="payments">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="paymentsPK"/>
@@ -314,7 +324,7 @@
             <column name="transaction_id" type="VARCHAR(100)"/>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-10">
+    <changeSet author="saidur" id="1766953947832-11">
         <createTable tableName="residents">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="residentsPK"/>
@@ -326,34 +336,18 @@
             <column name="tenant_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_of_birth" type="date"/>
-            <column name="email" type="VARCHAR(150)"/>
-            <column name="emergency_contact_name" type="VARCHAR(100)"/>
-            <column name="emergency_contact_phone" type="VARCHAR(20)"/>
-            <column name="emergency_contact_relationship" type="VARCHAR(50)"/>
-            <column name="first_name" type="VARCHAR(100)">
+            <column name="apartment_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_primary_resident" type="BOOLEAN"/>
-            <column name="last_name" type="VARCHAR(100)">
+            <column name="is_primary_resident" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="move_in_date" type="date"/>
-            <column name="move_out_date" type="date"/>
-            <column name="national_id" type="VARCHAR(50)"/>
-            <column name="nationality" type="VARCHAR(100)"/>
-            <column name="notes" type="VARCHAR(500)"/>
-            <column name="passport_expiry_date" type="date"/>
-            <column name="passport_number" type="VARCHAR(50)"/>
-            <column name="phone_number" type="VARCHAR(20)"/>
-            <column name="status" type="VARCHAR(20)">
+            <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT"/>
-            <column name="apartment_id" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-11">
+    <changeSet author="saidur" id="1766953947832-12">
         <createTable tableName="roles">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="rolesPK"/>
@@ -368,7 +362,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-12">
+    <changeSet author="saidur" id="1766953947832-13">
         <createTable tableName="tenants">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="tenantsPK"/>
@@ -389,7 +383,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-13">
+    <changeSet author="saidur" id="1766953947832-14">
         <createTable tableName="user_roles">
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="user_rolesPK"/>
@@ -399,7 +393,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-14">
+    <changeSet author="saidur" id="1766953947832-15">
         <createTable tableName="users">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="usersPK"/>
@@ -411,96 +405,110 @@
             <column name="tenant_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="date_of_birth" type="date"/>
             <column name="email" type="VARCHAR(150)">
                 <constraints nullable="false"/>
             </column>
+            <column name="emergency_contact_name" type="VARCHAR(100)"/>
+            <column name="emergency_contact_phone" type="VARCHAR(20)"/>
+            <column name="emergency_contact_relationship" type="VARCHAR(50)"/>
             <column name="enabled" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
+            <column name="first_name" type="VARCHAR(100)"/>
+            <column name="last_name" type="VARCHAR(100)"/>
+            <column name="national_id" type="VARCHAR(50)"/>
+            <column name="nationality" type="VARCHAR(100)"/>
+            <column name="passport_expiry_date" type="date"/>
+            <column name="passport_number" type="VARCHAR(50)"/>
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="phone_number" type="VARCHAR(20)"/>
             <column name="username" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-15">
+    <changeSet author="saidur" id="1766953947832-16">
         <addUniqueConstraint columnNames="booking_reference" constraintName="UC_AMENITY_BOOKINGSBOOKING_REFERENCE_COL" tableName="amenity_bookings"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-16">
+    <changeSet author="saidur" id="1766953947832-17">
         <addUniqueConstraint columnNames="invoice_number" constraintName="UC_INVOICESINVOICE_NUMBER_COL" tableName="invoices"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-17">
+    <changeSet author="saidur" id="1766953947832-18">
         <addUniqueConstraint columnNames="request_number" constraintName="UC_MAINTENANCE_REQUESTSREQUEST_NUMBER_COL" tableName="maintenance_requests"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-18">
+    <changeSet author="saidur" id="1766953947832-19">
         <addUniqueConstraint columnNames="payment_reference" constraintName="UC_PAYMENTSPAYMENT_REFERENCE_COL" tableName="payments"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-19">
-        <addUniqueConstraint columnNames="email" constraintName="UC_RESIDENTSEMAIL_COL" tableName="residents"/>
-    </changeSet>
-    <changeSet author="saidur" id="1766861086730-20">
+    <changeSet author="saidur" id="1766953947832-20">
         <addUniqueConstraint columnNames="name" constraintName="UC_ROLESNAME_COL" tableName="roles"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-21">
+    <changeSet author="saidur" id="1766953947832-21">
         <addUniqueConstraint columnNames="tenant_key" constraintName="UC_TENANTSTENANT_KEY_COL" tableName="tenants"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-22">
+    <changeSet author="saidur" id="1766953947832-22">
         <addUniqueConstraint columnNames="email, tenant_id" constraintName="UKdms6tsnbugy9927cn4kwci01a" tableName="users"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-23">
+    <changeSet author="saidur" id="1766953947832-23">
         <addForeignKeyConstraint baseColumnNames="created_by_id" baseTableName="announcements" constraintName="FK2xq7ufsyexvej4l6ld869ddxy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-24">
+    <changeSet author="saidur" id="1766953947832-24">
+        <addForeignKeyConstraint baseColumnNames="manager_id" baseTableName="building_managers" constraintName="FK5ax857g85cj2jr9wi5tcuel8t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766953947832-25">
+        <addForeignKeyConstraint baseColumnNames="building_id" baseTableName="building_managers" constraintName="FK7t84s1b7ekjns3ssui2l1ke6t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="buildings" validate="true"/>
+    </changeSet>
+    <changeSet author="saidur" id="1766953947832-26">
         <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="maintenance_requests" constraintName="FK8kfnysuua0emnbeku9vt5hg5e" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-25">
+    <changeSet author="saidur" id="1766953947832-27">
         <addForeignKeyConstraint baseColumnNames="primary_resident_id" baseTableName="leases" constraintName="FK8lqyu3dwfacb5jllcekxi1plj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-26">
+    <changeSet author="saidur" id="1766953947832-28">
         <addForeignKeyConstraint baseColumnNames="amenity_id" baseTableName="amenity_bookings" constraintName="FKb7nbok395fdrpl83s9tqa7nq5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="amenities" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-27">
+    <changeSet author="saidur" id="1766953947832-29">
         <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="amenity_bookings" constraintName="FKcfge76xwne2ncfwj1lppn93dp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-28">
+    <changeSet author="saidur" id="1766953947832-30">
         <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="leases" constraintName="FKdgpj3p58xww6n3xua0jlnv3pi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-29">
+    <changeSet author="saidur" id="1766953947832-31">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="residents" constraintName="FKg38luqcgm3qqs0s9lgjdfl9ov" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-30">
+    <changeSet author="saidur" id="1766953947832-32">
         <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="residents" constraintName="FKgq3b1iv87p9nhnpvw6yrbwj14" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-31">
+    <changeSet author="saidur" id="1766953947832-33">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles" constraintName="FKh8ciramu9cc9q3qcqiv4ue8a6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="roles" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-32">
+    <changeSet author="saidur" id="1766953947832-34">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="FKhfh9dx7w3ubf1co1vdev94g3f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-33">
+    <changeSet author="saidur" id="1766953947832-35">
         <addForeignKeyConstraint baseColumnNames="assigned_to_id" baseTableName="maintenance_requests" constraintName="FKirs2mjqoaxkdf48bfhheqrgd9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-34">
+    <changeSet author="saidur" id="1766953947832-36">
         <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="invoices" constraintName="FKl97x2bloi4vesrw985f7t0xmp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-35">
+    <changeSet author="saidur" id="1766953947832-37">
         <addForeignKeyConstraint baseColumnNames="apartment_id" baseTableName="maintenance_requests" constraintName="FKmb347t12gni1j3d46bhfbt722" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="apartments" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-36">
+    <changeSet author="saidur" id="1766953947832-38">
         <addForeignKeyConstraint baseColumnNames="approved_by_id" baseTableName="amenity_bookings" constraintName="FKng8vf7qqm33vax5mf8v320uan" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-37">
+    <changeSet author="saidur" id="1766953947832-39">
         <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="payments" constraintName="FKoant83d80a2ryjuco84n0yus8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="residents" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-38">
+    <changeSet author="saidur" id="1766953947832-40">
         <addForeignKeyConstraint baseColumnNames="lease_id" baseTableName="invoices" constraintName="FKpwe953gt2h98vy2ltefsugr82" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="leases" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-39">
+    <changeSet author="saidur" id="1766953947832-41">
         <addForeignKeyConstraint baseColumnNames="building_id" baseTableName="apartments" constraintName="FKr2gnfdtdjbc8uyss7rlsf9jxk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="buildings" validate="true"/>
     </changeSet>
-    <changeSet author="saidur" id="1766861086730-40">
+    <changeSet author="saidur" id="1766953947832-42">
         <addForeignKeyConstraint baseColumnNames="invoice_id" baseTableName="payments" constraintName="FKrbqec6be74wab8iifh8g3i50i" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="invoices" validate="true"/>
     </changeSet>
 </databaseChangeLog>

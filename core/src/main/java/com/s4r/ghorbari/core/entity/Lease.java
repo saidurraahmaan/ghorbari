@@ -24,13 +24,22 @@ public class Lease extends TenantAwareEntity {
     @JoinColumn(name = "primary_resident_id", insertable = false, updatable = false)
     private Resident primaryResident;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "lease_type", nullable = false)
+    private LeaseType leaseType = LeaseType.MONTH_TO_MONTH;
+
     @NotNull
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @NotNull
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    @Column(name = "end_date")
+    private LocalDate endDate; // Required for FIXED_TERM, null for MONTH_TO_MONTH
+
+    @Column(name = "notice_period_months")
+    private Integer noticePeriodMonths = 2; // Default: 2 months notice for MONTH_TO_MONTH
+
+    @Column(name = "notice_given_date")
+    private LocalDate noticeGivenDate;
 
     @NotNull
     @Column(name = "monthly_rent", precision = 10, scale = 2, nullable = false)
@@ -39,21 +48,12 @@ public class Lease extends TenantAwareEntity {
     @Column(name = "security_deposit", precision = 10, scale = 2)
     private BigDecimal securityDeposit;
 
-    @Column(name = "payment_due_day")
-    private Integer paymentDueDay;
+    @Column(name = "advance_payment_months")
+    private Integer advancePaymentMonths; // For MONTH_TO_MONTH: 1 or 2 months advance
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LeaseStatus status = LeaseStatus.DRAFT;
-
-    @Column(name = "terms_conditions", length = 5000)
-    private String termsConditions;
-
-    @Column(name = "special_clauses", length = 2000)
-    private String specialClauses;
-
-    @Column(name = "signed_date")
-    private LocalDate signedDate;
 
     @Column(name = "termination_date")
     private LocalDate terminationDate;
@@ -64,13 +64,16 @@ public class Lease extends TenantAwareEntity {
     @Column(length = 1000)
     private String notes;
 
+    public enum LeaseType {
+        FIXED_TERM,      // Formal agreement for specific period (e.g., 1 year), can be renewed
+        MONTH_TO_MONTH   // Family renter - informal, flexible, requires 1-2 months notice before leaving
+    }
+
     public enum LeaseStatus {
-        DRAFT,
-        ACTIVE,
-        EXPIRING_SOON,
-        EXPIRED,
-        TERMINATED,
-        RENEWED
+        DRAFT,       // Lease being created but not yet active
+        ACTIVE,      // Currently active lease
+        TERMINATED,  // Ended early or notice given for MONTH_TO_MONTH
+        EXPIRED      // Only for FIXED_TERM when end_date has passed
     }
 
     // Constructors
@@ -126,12 +129,44 @@ public class Lease extends TenantAwareEntity {
         this.startDate = startDate;
     }
 
+    public LeaseType getLeaseType() {
+        return leaseType;
+    }
+
+    public void setLeaseType(LeaseType leaseType) {
+        this.leaseType = leaseType;
+    }
+
     public LocalDate getEndDate() {
         return endDate;
     }
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Integer getNoticePeriodMonths() {
+        return noticePeriodMonths;
+    }
+
+    public void setNoticePeriodMonths(Integer noticePeriodMonths) {
+        this.noticePeriodMonths = noticePeriodMonths;
+    }
+
+    public Integer getAdvancePaymentMonths() {
+        return advancePaymentMonths;
+    }
+
+    public void setAdvancePaymentMonths(Integer advancePaymentMonths) {
+        this.advancePaymentMonths = advancePaymentMonths;
+    }
+
+    public LocalDate getNoticeGivenDate() {
+        return noticeGivenDate;
+    }
+
+    public void setNoticeGivenDate(LocalDate noticeGivenDate) {
+        this.noticeGivenDate = noticeGivenDate;
     }
 
     public BigDecimal getMonthlyRent() {
@@ -150,44 +185,12 @@ public class Lease extends TenantAwareEntity {
         this.securityDeposit = securityDeposit;
     }
 
-    public Integer getPaymentDueDay() {
-        return paymentDueDay;
-    }
-
-    public void setPaymentDueDay(Integer paymentDueDay) {
-        this.paymentDueDay = paymentDueDay;
-    }
-
     public LeaseStatus getStatus() {
         return status;
     }
 
     public void setStatus(LeaseStatus status) {
         this.status = status;
-    }
-
-    public String getTermsConditions() {
-        return termsConditions;
-    }
-
-    public void setTermsConditions(String termsConditions) {
-        this.termsConditions = termsConditions;
-    }
-
-    public String getSpecialClauses() {
-        return specialClauses;
-    }
-
-    public void setSpecialClauses(String specialClauses) {
-        this.specialClauses = specialClauses;
-    }
-
-    public LocalDate getSignedDate() {
-        return signedDate;
-    }
-
-    public void setSignedDate(LocalDate signedDate) {
-        this.signedDate = signedDate;
     }
 
     public LocalDate getTerminationDate() {

@@ -219,15 +219,14 @@ public class LeaseController {
         LeaseDto dto = new LeaseDto();
         dto.setApartmentId(request.getApartmentId());
         dto.setPrimaryResidentId(request.getPrimaryResidentId());
+        dto.setLeaseType(request.getLeaseType());
         dto.setStartDate(request.getStartDate());
         dto.setEndDate(request.getEndDate());
+        dto.setNoticePeriodMonths(request.getNoticePeriodMonths());
+        dto.setAdvancePaymentMonths(request.getAdvancePaymentMonths());
         dto.setMonthlyRent(request.getMonthlyRent());
         dto.setSecurityDeposit(request.getSecurityDeposit());
-        dto.setPaymentDueDay(request.getPaymentDueDay());
         dto.setStatus(request.getStatus());
-        dto.setTermsConditions(request.getTermsConditions());
-        dto.setSpecialClauses(request.getSpecialClauses());
-        dto.setSignedDate(request.getSignedDate());
         dto.setNotes(request.getNotes());
         return dto;
     }

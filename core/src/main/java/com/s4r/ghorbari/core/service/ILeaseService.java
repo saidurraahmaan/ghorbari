@@ -31,5 +31,9 @@ public interface ILeaseService {
 
     void renewLease(Long id, LocalDate newEndDate);
 
+    void giveNotice(Long id, LocalDate noticeDate);
+
+    LocalDate calculateExpectedMoveOutDate(Long id);
+
     void deleteLease(Long id);
 }

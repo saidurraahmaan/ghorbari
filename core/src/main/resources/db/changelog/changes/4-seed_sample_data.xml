@@ -1,0 +1,203 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="saidur" id="seed-sample-data-1" context="dev">
+        <comment>Seed sample buildings, apartments, residents, and leases for testing</comment>
+
+        <!-- Building 1: Sunrise Tower A -->
+        <insert tableName="buildings">
+            <column name="name" value="Sunrise Tower A"/>
+            <column name="address" value="123 Gulshan Avenue, Dhaka 1212"/>
+            <column name="total_floors" valueNumeric="10"/>
+            <column name="total_units" valueNumeric="40"/>
+            <column name="year_built" valueNumeric="2018"/>
+            <column name="description" value="Modern residential building with premium amenities"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Building 2: Sunrise Tower B -->
+        <insert tableName="buildings">
+            <column name="name" value="Sunrise Tower B"/>
+            <column name="address" value="125 Gulshan Avenue, Dhaka 1212"/>
+            <column name="total_floors" valueNumeric="12"/>
+            <column name="total_units" valueNumeric="48"/>
+            <column name="year_built" valueNumeric="2020"/>
+            <column name="description" value="Luxury apartments with rooftop garden"/>
+            <column name="status" value="ACTIVE"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Assign Manager to Buildings -->
+        <sql>
+            INSERT INTO building_managers (building_id, manager_id)
+            SELECT b.id, u.id
+            FROM buildings b, users u
+            WHERE b.name IN ('Sunrise Tower A', 'Sunrise Tower B')
+            AND u.email = 'manager@sunrise.com'
+            AND b.tenant_id = 1;
+        </sql>
+
+        <!-- Apartments in Tower A -->
+        <insert tableName="apartments">
+            <column name="building_id" valueComputed="(SELECT id FROM buildings WHERE name = 'Sunrise Tower A' LIMIT 1)"/>
+            <column name="apartment_number" value="101"/>
+            <column name="floor" valueNumeric="1"/>
+            <column name="bedrooms" valueNumeric="3"/>
+            <column name="bathrooms" valueNumeric="2"/>
+            <column name="square_footage" valueNumeric="1200"/>
+            <column name="status" value="OCCUPIED"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="apartments">
+            <column name="building_id" valueComputed="(SELECT id FROM buildings WHERE name = 'Sunrise Tower A' LIMIT 1)"/>
+            <column name="apartment_number" value="102"/>
+            <column name="floor" valueNumeric="1"/>
+            <column name="bedrooms" valueNumeric="2"/>
+            <column name="bathrooms" valueNumeric="1"/>
+            <column name="square_footage" valueNumeric="900"/>
+            <column name="status" value="VACANT"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <insert tableName="apartments">
+            <column name="building_id" valueComputed="(SELECT id FROM buildings WHERE name = 'Sunrise Tower A' LIMIT 1)"/>
+            <column name="apartment_number" value="201"/>
+            <column name="floor" valueNumeric="2"/>
+            <column name="bedrooms" valueNumeric="4"/>
+            <column name="bathrooms" valueNumeric="3"/>
+            <column name="square_footage" valueNumeric="1500"/>
+            <column name="status" value="VACANT"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Additional Resident Users -->
+        <insert tableName="users">
+            <column name="username" value="sarah_resident"/>
+            <column name="email" value="sarah@sunrise.com"/>
+            <column name="password" value="$2a$10$aFVE7X5tS1IXG9EF1ht4LumOj9y.Bx3sIlGKYDHelktUlLXF0m9da"/>
+            <!-- Password: 444444 -->
+            <column name="first_name" value="Sarah"/>
+            <column name="last_name" value="Ahmed"/>
+            <column name="phone_number" value="+8801755555555"/>
+            <column name="date_of_birth" value="1990-03-20"/>
+            <column name="national_id" value="19903456789012"/>
+            <column name="nationality" value="Bangladeshi"/>
+            <column name="emergency_contact_name" value="Ali Ahmed"/>
+            <column name="emergency_contact_phone" value="+8801766666666"/>
+            <column name="emergency_contact_relationship" value="Brother"/>
+            <column name="enabled" valueBoolean="true"/>
+            <column name="tenant_id" valueNumeric="1"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+        <!-- Assign ROLE_RESIDENT to sarah -->
+        <sql>
+            INSERT INTO user_roles (user_id, role_id)
+            SELECT u.id, r.id
+            FROM users u, roles r
+            WHERE u.email = 'sarah@sunrise.com'
+            AND r.name = 'ROLE_RESIDENT';
+        </sql>
+
+        <!-- Create Resident Mappings (User -> Apartment) -->
+        <!-- John Smith as primary resident in Apt 101 -->
+        <sql>
+            INSERT INTO residents (user_id, apartment_id, is_primary_resident, tenant_id, created_at, updated_at)
+            SELECT u.id, a.id, true, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM users u, apartments a
+            WHERE u.email = 'john@sunrise.com'
+            AND a.apartment_number = '101'
+            AND a.building_id = (SELECT id FROM buildings WHERE name = 'Sunrise Tower A' LIMIT 1);
+        </sql>
+
+        <!-- Sarah Ahmed as secondary resident (family member) in Apt 101 -->
+        <sql>
+            INSERT INTO residents (user_id, apartment_id, is_primary_resident, tenant_id, created_at, updated_at)
+            SELECT u.id, a.id, false, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+            FROM users u, apartments a
+            WHERE u.email = 'sarah@sunrise.com'
+            AND a.apartment_number = '101'
+            AND a.building_id = (SELECT id FROM buildings WHERE name = 'Sunrise Tower A' LIMIT 1);
+        </sql>
+
+        <!-- Create Lease for Apartment 101 -->
+        <sql>
+            INSERT INTO leases (
+                apartment_id,
+                primary_resident_id,
+                lease_type,
+                start_date,
+                end_date,
+                notice_period_months,
+                advance_payment_months,
+                monthly_rent,
+                security_deposit,
+                status,
+                notes,
+                tenant_id,
+                created_at,
+                updated_at
+            )
+            SELECT
+                a.id,
+                r.id,
+                'FIXED_TERM',
+                '2024-01-01',
+                '2025-12-31',
+                2,
+                2,
+                35000.00,
+                70000.00,
+                'ACTIVE',
+                'Standard 2-year lease agreement',
+                1,
+                CURRENT_TIMESTAMP,
+                CURRENT_TIMESTAMP
+            FROM apartments a
+            INNER JOIN residents r ON r.apartment_id = a.id AND r.is_primary_resident = true
+            WHERE a.apartment_number = '101'
+            AND a.building_id = (SELECT id FROM buildings WHERE name = 'Sunrise Tower A' LIMIT 1);
+        </sql>
+
+        <rollback>
+            <delete tableName="leases">
+                <where>tenant_id = 1</where>
+            </delete>
+            <delete tableName="residents">
+                <where>tenant_id = 1</where>
+            </delete>
+            <delete tableName="user_roles">
+                <where>user_id IN (SELECT id FROM users WHERE email = 'sarah@sunrise.com')</where>
+            </delete>
+            <delete tableName="users">
+                <where>email = 'sarah@sunrise.com'</where>
+            </delete>
+            <delete tableName="apartments">
+                <where>tenant_id = 1</where>
+            </delete>
+            <delete tableName="building_managers">
+                <where>building_id IN (SELECT id FROM buildings WHERE tenant_id = 1)</where>
+            </delete>
+            <delete tableName="buildings">
+                <where>tenant_id = 1</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

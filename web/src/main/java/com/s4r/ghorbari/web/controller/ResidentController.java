@@ -1,7 +1,6 @@
 package com.s4r.ghorbari.web.controller;
 
 import com.s4r.ghorbari.core.domain.ResidentDto;
-import com.s4r.ghorbari.core.entity.Resident;
 import com.s4r.ghorbari.core.service.IResidentService;
 import com.s4r.ghorbari.web.dto.ResidentRequest;
 import com.s4r.ghorbari.web.exception.ErrorResponse;
@@ -76,17 +75,16 @@ public class ResidentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Get residents by status", description = "Retrieve residents filtered by status")
+    @Operation(summary = "Get residents by user", description = "Retrieve all apartments where a user is a resident")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Residents retrieved successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<ResidentDto>> getResidentsByStatus(
-            @Parameter(description = "Resident status (ACTIVE, INACTIVE, EVICTED)")
-            @PathVariable Resident.ResidentStatus status) {
-        List<ResidentDto> residents = residentService.getResidentsByStatus(status);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ResidentDto>> getResidentsByUser(
+            @Parameter(description = "User ID") @PathVariable Long userId) {
+        List<ResidentDto> residents = residentService.getResidentsByUserId(userId);
         return ResponseEntity.ok(residents);
     }
 
@@ -101,6 +99,23 @@ public class ResidentController {
             @Parameter(description = "Apartment ID") @PathVariable Long apartmentId) {
         List<ResidentDto> residents = residentService.getResidentsByApartmentId(apartmentId);
         return ResponseEntity.ok(residents);
+    }
+
+    @Operation(summary = "Get primary resident by apartment", description = "Retrieve the primary resident of a specific apartment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Primary resident found",
+                    content = @Content(schema = @Schema(implementation = ResidentDto.class))),
+            @ApiResponse(responseCode = "404", description = "Primary resident not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/apartment/{apartmentId}/primary")
+    public ResponseEntity<ResidentDto> getPrimaryResidentByApartment(
+            @Parameter(description = "Apartment ID") @PathVariable Long apartmentId) {
+        return residentService.getPrimaryResidentByApartmentId(apartmentId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Update resident", description = "Update an existing resident")
@@ -137,24 +152,9 @@ public class ResidentController {
 
     private ResidentDto mapToDto(ResidentRequest request) {
         ResidentDto dto = new ResidentDto();
-        dto.setFirstName(request.getFirstName());
-        dto.setLastName(request.getLastName());
-        dto.setEmail(request.getEmail());
-        dto.setPhoneNumber(request.getPhoneNumber());
-        dto.setDateOfBirth(request.getDateOfBirth());
         dto.setUserId(request.getUserId());
-        dto.setNationalId(request.getNationalId());
-        dto.setPassportNumber(request.getPassportNumber());
-        dto.setPassportExpiryDate(request.getPassportExpiryDate());
-        dto.setNationality(request.getNationality());
-        dto.setEmergencyContactName(request.getEmergencyContactName());
-        dto.setEmergencyContactPhone(request.getEmergencyContactPhone());
-        dto.setEmergencyContactRelationship(request.getEmergencyContactRelationship());
+        dto.setApartmentId(request.getApartmentId());
         dto.setIsPrimaryResident(request.getIsPrimaryResident());
-        dto.setMoveInDate(request.getMoveInDate());
-        dto.setMoveOutDate(request.getMoveOutDate());
-        dto.setStatus(request.getStatus());
-        dto.setNotes(request.getNotes());
         return dto;
     }
 }

@@ -20,6 +20,9 @@
             <column name="email" value="superadmin@ghorbari.com"/>
             <column name="password" value="$2a$10$/p5tZ8WqpEpH5y8d7w49Zuw5xXH.M1bBA7FxlU6GiKTs8tb1cpZ5G"/>
             <!-- Password: 111111 (BCrypt hash generated) -->
+            <column name="first_name" value="System"/>
+            <column name="last_name" value="Administrator"/>
+            <column name="phone_number" value="+8801700000000"/>
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <!-- Assigned to first tenant for now -->
@@ -33,6 +36,9 @@
             <column name="email" value="admin@sunrise.com"/>
             <column name="password" value="$2a$10$TA1yoTu8a4fyCYaeQcc16eQOCfHV.hinfFPZOQtcoY6S/eTIfiIbq"/>
             <!-- Password: 222222 (BCrypt hash generated) -->
+            <column name="first_name" value="Sarah"/>
+            <column name="last_name" value="Johnson"/>
+            <column name="phone_number" value="+8801711111111"/>
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <!-- Sunrise Towers tenant ID -->
@@ -46,6 +52,9 @@
             <column name="email" value="manager@sunrise.com"/>
             <column name="password" value="$2a$10$tCPtN5dtVbSyOyQpHI.iMOqsd.YLHmA6uHYFofjFTn6cdHGDaNBCW"/>
             <!-- Password: 333333 (BCrypt hash generated) -->
+            <column name="first_name" value="Michael"/>
+            <column name="last_name" value="Rahman"/>
+            <column name="phone_number" value="+8801722222222"/>
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
@@ -58,6 +67,15 @@
             <column name="email" value="john@sunrise.com"/>
             <column name="password" value="$2a$10$aFVE7X5tS1IXG9EF1ht4LumOj9y.Bx3sIlGKYDHelktUlLXF0m9da"/>
             <!-- Password: 444444 (BCrypt hash generated) -->
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Smith"/>
+            <column name="phone_number" value="+8801733333333"/>
+            <column name="date_of_birth" value="1985-06-15"/>
+            <column name="national_id" value="19856789012345"/>
+            <column name="nationality" value="Bangladeshi"/>
+            <column name="emergency_contact_name" value="Jane Smith"/>
+            <column name="emergency_contact_phone" value="+8801744444444"/>
+            <column name="emergency_contact_relationship" value="Spouse"/>
             <column name="enabled" valueBoolean="true"/>
             <column name="tenant_id" valueNumeric="1"/>
             <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>

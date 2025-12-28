@@ -10,9 +10,11 @@ import java.util.Optional;
 @Repository
 public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
-    Optional<Resident> findByEmail(String email);
-
-    List<Resident> findByStatus(Resident.ResidentStatus status);
-
     List<Resident> findByApartmentId(Long apartmentId);
+
+    List<Resident> findByUserId(Long userId);
+
+    Optional<Resident> findByApartmentIdAndIsPrimaryResident(Long apartmentId, Boolean isPrimaryResident);
+
+    Optional<Resident> findByUserIdAndApartmentId(Long userId, Long apartmentId);
 }

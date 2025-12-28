@@ -19,4 +19,11 @@ public interface IBuildingService {
     void updateBuilding(Long id, BuildingDto dto);
 
     void deleteBuilding(Long id);
+
+    // Manager assignment methods
+    void assignManagerToBuilding(Long buildingId, Long managerId);
+
+    void removeManagerFromBuilding(Long buildingId, Long managerId);
+
+    List<BuildingDto> getBuildingsByManager(Long managerId);
 }

@@ -26,11 +26,31 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void createResident(ResidentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
             throw new ServiceException(ErrorCode.TENANT_NOT_FOUND, "Tenant context not set");
         }
+
+        // Check if user is already a resident of this apartment
+        Optional<Resident> existing = residentRepository.findByUserIdAndApartmentId(
+                dto.getUserId(), dto.getApartmentId());
+        if (existing.isPresent()) {
+            throw new ServiceException(ErrorCode.INVALID_OPERATION,
+                    "User is already a resident of this apartment");
+        }
+
+        // If trying to set as primary resident, check if apartment already has a primary resident
+        if (Boolean.TRUE.equals(dto.getIsPrimaryResident())) {
+            Optional<Resident> primaryResident = residentRepository.findByApartmentIdAndIsPrimaryResident(
+                    dto.getApartmentId(), true);
+            if (primaryResident.isPresent()) {
+                throw new ServiceException(ErrorCode.INVALID_OPERATION,
+                        "Apartment already has a primary resident");
+            }
+        }
+
         Resident resident = dto.toEntity();
         resident.setTenantId(tenantId);
         residentRepository.save(resident);
@@ -50,23 +70,23 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
-    public Optional<ResidentDto> getResidentByEmail(String email) {
-        return residentRepository.findByEmail(email)
-                .map(ResidentDto::new);
-    }
-
-    @Override
-    public List<ResidentDto> getResidentsByStatus(Resident.ResidentStatus status) {
-        return residentRepository.findByStatus(status).stream()
-                .map(ResidentDto::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public List<ResidentDto> getResidentsByApartmentId(Long apartmentId) {
         return residentRepository.findByApartmentId(apartmentId).stream()
                 .map(ResidentDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ResidentDto> getResidentsByUserId(Long userId) {
+        return residentRepository.findByUserId(userId).stream()
+                .map(ResidentDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<ResidentDto> getPrimaryResidentByApartmentId(Long apartmentId) {
+        return residentRepository.findByApartmentIdAndIsPrimaryResident(apartmentId, true)
+                .map(ResidentDto::new);
     }
 
     @Override
@@ -77,8 +97,18 @@ public class ResidentService implements IResidentService {
             throw new ServiceException(ErrorCode.TENANT_NOT_FOUND, "Tenant context not set");
         }
 
-        residentRepository.findById(id)
+        Resident existingResident = residentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Resident not found"));
+
+        // If trying to set as primary resident, check if apartment already has a different primary resident
+        if (Boolean.TRUE.equals(dto.getIsPrimaryResident()) && !existingResident.getIsPrimaryResident()) {
+            Optional<Resident> primaryResident = residentRepository.findByApartmentIdAndIsPrimaryResident(
+                    dto.getApartmentId(), true);
+            if (primaryResident.isPresent() && !primaryResident.get().getId().equals(id)) {
+                throw new ServiceException(ErrorCode.INVALID_OPERATION,
+                        "Apartment already has a primary resident");
+            }
+        }
 
         Resident resident = dto.toEntity();
         resident.setId(id);
@@ -87,7 +117,7 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void deleteResident(Long id) {
         Resident resident = residentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Resident not found"));

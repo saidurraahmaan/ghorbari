@@ -15,4 +15,7 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
     Optional<Building> findByIdAndTenantId(Long id, Long tenantId);
 
     List<Building> findByTenantIdAndStatus(Long tenantId, Building.BuildingStatus status);
+
+    // Manager-related queries
+    List<Building> findByManagersId(Long managerId);
 }

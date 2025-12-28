@@ -11,6 +11,7 @@ import com.s4r.ghorbari.core.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void registerUser(String username, String email, String encodedPassword, Long tenantId) {
+    public void registerUser(String username, String email, String encodedPassword, String firstName, String lastName, Long tenantId) {
         TenantContext.setCurrentTenantId(tenantId);
 
         try {
@@ -37,7 +38,7 @@ public class UserService implements IUserService {
                 throw new ServiceException(ErrorCode.USER_ALREADY_EXISTS, email);
             }
 
-            User user = new User(username, email, encodedPassword);
+            User user = new User(username, email, encodedPassword, firstName, lastName);
             user.setTenantId(tenantId);
 
             // Assign default role
@@ -71,5 +72,61 @@ public class UserService implements IUserService {
     @Override
     public boolean existsByEmailAndTenantId(String email, Long tenantId) {
         return userRepository.existsByEmailAndTenantId(email, tenantId);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public void updateUserProfile(Long userId, String firstName, String lastName, String phoneNumber,
+                                  LocalDate dateOfBirth, String nationalId, String passportNumber,
+                                  LocalDate passportExpiryDate, String nationality, String emergencyContactName,
+                                  String emergencyContactPhone, String emergencyContactRelationship) {
+        Long tenantId = TenantContext.getCurrentTenantId();
+        if (tenantId == null) {
+            throw new ServiceException(ErrorCode.TENANT_NOT_FOUND, "Tenant context not set");
+        }
+
+        User user = userRepository.findByIdAndTenantId(userId, tenantId)
+                .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "User not found"));
+
+        // Update personal fields (only if provided - null means no change)
+        if (firstName != null) {
+            user.setFirstName(firstName);
+        }
+        if (lastName != null) {
+            user.setLastName(lastName);
+        }
+        if (phoneNumber != null) {
+            user.setPhoneNumber(phoneNumber);
+        }
+        if (dateOfBirth != null) {
+            user.setDateOfBirth(dateOfBirth);
+        }
+        if (nationalId != null) {
+            user.setNationalId(nationalId);
+        }
+        if (passportNumber != null) {
+            user.setPassportNumber(passportNumber);
+        }
+        if (passportExpiryDate != null) {
+            user.setPassportExpiryDate(passportExpiryDate);
+        }
+        if (nationality != null) {
+            user.setNationality(nationality);
+        }
+        if (emergencyContactName != null) {
+            user.setEmergencyContactName(emergencyContactName);
+        }
+        if (emergencyContactPhone != null) {
+            user.setEmergencyContactPhone(emergencyContactPhone);
+        }
+        if (emergencyContactRelationship != null) {
+            user.setEmergencyContactRelationship(emergencyContactRelationship);
+        }
+
+        userRepository.save(user);
     }
 }
