@@ -9,6 +9,7 @@ public class ApartmentDto {
     private Long id;
     private String unitNumber;
     private Long buildingId;
+    private String buildingName;
     private Integer floor;
     private Integer bedrooms;
     private Integer bathrooms;
@@ -25,6 +26,7 @@ public class ApartmentDto {
         this.id = apartment.getId();
         this.unitNumber = apartment.getApartmentNumber();
         this.buildingId = apartment.getBuildingId();
+        this.buildingName = apartment.getBuilding() != null ? apartment.getBuilding().getName() : null;
         this.floor = apartment.getFloor();
         this.bedrooms = apartment.getBedrooms();
         this.bathrooms = apartment.getBathrooms();
@@ -72,6 +74,14 @@ public class ApartmentDto {
 
     public void setBuildingId(Long buildingId) {
         this.buildingId = buildingId;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 
     public Integer getFloor() {

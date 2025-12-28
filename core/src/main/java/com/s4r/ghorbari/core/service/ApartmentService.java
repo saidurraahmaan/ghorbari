@@ -39,27 +39,27 @@ public class ApartmentService implements IApartmentService {
 
     @Override
     public Optional<ApartmentDto> getApartmentById(Long id) {
-        return apartmentRepository.findById(id)
+        return apartmentRepository.findByIdWithBuilding(id)
                 .map(ApartmentDto::new);
     }
 
     @Override
     public List<ApartmentDto> getAllApartments() {
-        return apartmentRepository.findAll().stream()
+        return apartmentRepository.findAllWithBuilding().stream()
                 .map(ApartmentDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ApartmentDto> getApartmentsByStatus(Apartment.ApartmentStatus status) {
-        return apartmentRepository.findByStatus(status).stream()
+        return apartmentRepository.findByStatusWithBuilding(status).stream()
                 .map(ApartmentDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ApartmentDto> getApartmentsByBuildingId(Long buildingId) {
-        return apartmentRepository.findByBuildingId(buildingId).stream()
+        return apartmentRepository.findByBuildingIdWithBuilding(buildingId).stream()
                 .map(ApartmentDto::new)
                 .collect(Collectors.toList());
     }
