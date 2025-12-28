@@ -26,7 +26,7 @@ public class ApartmentRequest {
 
     private BigDecimal squareFootage;
 
-    private BigDecimal rentAmount;
+    private BigDecimal monthlyRent;
 
     private Apartment.ApartmentStatus status;
 
@@ -85,12 +85,12 @@ public class ApartmentRequest {
         this.squareFootage = squareFootage;
     }
 
-    public BigDecimal getRentAmount() {
-        return rentAmount;
+    public BigDecimal getMonthlyRent() {
+        return monthlyRent;
     }
 
-    public void setRentAmount(BigDecimal rentAmount) {
-        this.rentAmount = rentAmount;
+    public void setMonthlyRent(BigDecimal monthlyRent) {
+        this.monthlyRent = monthlyRent;
     }
 
     public Apartment.ApartmentStatus getStatus() {

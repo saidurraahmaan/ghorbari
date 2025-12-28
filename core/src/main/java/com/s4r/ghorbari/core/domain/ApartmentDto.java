@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 public class ApartmentDto {
 
     private Long id;
-    private String apartmentNumber;
+    private String unitNumber;
     private Long buildingId;
     private Integer floor;
     private Integer bedrooms;
     private Integer bathrooms;
     private BigDecimal squareFootage;
-    private BigDecimal rentAmount;
+    private BigDecimal monthlyRent;
     private Apartment.ApartmentStatus status;
     private String description;
 
@@ -23,13 +23,13 @@ public class ApartmentDto {
 
     public ApartmentDto(Apartment apartment) {
         this.id = apartment.getId();
-        this.apartmentNumber = apartment.getApartmentNumber();
+        this.unitNumber = apartment.getApartmentNumber();
         this.buildingId = apartment.getBuildingId();
         this.floor = apartment.getFloor();
         this.bedrooms = apartment.getBedrooms();
         this.bathrooms = apartment.getBathrooms();
         this.squareFootage = apartment.getSquareFootage();
-        this.rentAmount = apartment.getRentAmount();
+        this.monthlyRent = apartment.getMonthlyRent();
         this.status = apartment.getStatus();
         this.description = apartment.getDescription();
     }
@@ -37,13 +37,13 @@ public class ApartmentDto {
     public Apartment toEntity() {
         Apartment apartment = new Apartment();
         apartment.setId(this.id);
-        apartment.setApartmentNumber(this.apartmentNumber);
+        apartment.setApartmentNumber(this.unitNumber);
         apartment.setBuildingId(this.buildingId);
         apartment.setFloor(this.floor);
         apartment.setBedrooms(this.bedrooms);
         apartment.setBathrooms(this.bathrooms);
         apartment.setSquareFootage(this.squareFootage);
-        apartment.setRentAmount(this.rentAmount);
+        apartment.setMonthlyRent(this.monthlyRent);
         apartment.setStatus(this.status);
         apartment.setDescription(this.description);
         return apartment;
@@ -58,12 +58,12 @@ public class ApartmentDto {
         this.id = id;
     }
 
-    public String getApartmentNumber() {
-        return apartmentNumber;
+    public String getUnitNumber() {
+        return unitNumber;
     }
 
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
     }
 
     public Long getBuildingId() {
@@ -106,12 +106,12 @@ public class ApartmentDto {
         this.squareFootage = squareFootage;
     }
 
-    public BigDecimal getRentAmount() {
-        return rentAmount;
+    public BigDecimal getMonthlyRent() {
+        return monthlyRent;
     }
 
-    public void setRentAmount(BigDecimal rentAmount) {
-        this.rentAmount = rentAmount;
+    public void setMonthlyRent(BigDecimal monthlyRent) {
+        this.monthlyRent = monthlyRent;
     }
 
     public Apartment.ApartmentStatus getStatus() {

@@ -33,8 +33,8 @@ public class Apartment extends TenantAwareEntity {
     @Column(precision = 10, scale = 2)
     private BigDecimal squareFootage;
 
-    @Column(precision = 10, scale = 2)
-    private BigDecimal rentAmount;
+    @Column(name = "monthly_rent", precision = 10, scale = 2)
+    private BigDecimal monthlyRent;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -118,12 +118,12 @@ public class Apartment extends TenantAwareEntity {
         this.squareFootage = squareFootage;
     }
 
-    public BigDecimal getRentAmount() {
-        return rentAmount;
+    public BigDecimal getMonthlyRent() {
+        return monthlyRent;
     }
 
-    public void setRentAmount(BigDecimal rentAmount) {
-        this.rentAmount = rentAmount;
+    public void setMonthlyRent(BigDecimal monthlyRent) {
+        this.monthlyRent = monthlyRent;
     }
 
     public ApartmentStatus getStatus() {

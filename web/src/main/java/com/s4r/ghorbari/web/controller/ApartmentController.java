@@ -125,13 +125,13 @@ public class ApartmentController {
 
     private ApartmentDto mapToDto(ApartmentRequest request) {
         ApartmentDto dto = new ApartmentDto();
-        dto.setApartmentNumber(request.getUnitNumber());
+        dto.setUnitNumber(request.getUnitNumber());
         dto.setBuildingId(request.getBuildingId());
         dto.setFloor(request.getFloor());
         dto.setBedrooms(request.getBedrooms());
         dto.setBathrooms(request.getBathrooms());
         dto.setSquareFootage(request.getSquareFootage());
-        dto.setRentAmount(request.getRentAmount());
+        dto.setMonthlyRent(request.getMonthlyRent());
         dto.setStatus(request.getStatus());
         dto.setDescription(request.getDescription());
         return dto;
