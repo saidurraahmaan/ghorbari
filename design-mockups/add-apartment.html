@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Apartment - Ghorbari</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#EFF6FF',
+                            500: '#3B82F6',
+                            600: '#2563EB',
+                            700: '#1D4ED8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar (simplified) -->
+        <aside class="w-64 bg-white border-r border-gray-200">
+            <div class="h-16 flex items-center px-6 border-b border-gray-200">
+                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <span class="font-semibold text-gray-900">Ghorbari</span>
+            </div>
+            <nav class="px-4 py-4 space-y-1">
+                <a href="dashboard.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Dashboard</a>
+                <a href="buildings.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Buildings</a>
+                <a href="apartments.html" class="flex items-center px-4 py-3 text-sm font-medium text-white bg-primary-500 rounded-lg">Apartments</a>
+                <a href="residents.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Residents</a>
+                <a href="create-lease.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Leases</a>
+                <a href="invoices.html" class="flex items-center px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Finances</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Header -->
+            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+                <div class="flex items-center space-x-4">
+                    <a href="apartments.html" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">Add New Apartment</h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-medium">AU</button>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-4xl mx-auto">
+
+                    <form class="space-y-6">
+                        <!-- Basic Information -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Unit Number -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Unit Number <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g., 101, 2A, 5B"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Building -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Building <span class="text-red-500">*</span>
+                                    </label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500" required>
+                                        <option value="">Select Building</option>
+                                        <option>Building A - Sunrise Towers</option>
+                                        <option>Building B - Sunset Heights</option>
+                                        <option>Building C - Garden View</option>
+                                    </select>
+                                </div>
+
+                                <!-- Floor -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Floor <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        placeholder="e.g., 1, 2, 3"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Status -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Status <span class="text-red-500">*</span>
+                                    </label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500" required>
+                                        <option value="VACANT">Vacant</option>
+                                        <option value="OCCUPIED">Occupied</option>
+                                        <option value="MAINTENANCE">Under Maintenance</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Unit Details -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Unit Details</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- Bedrooms -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Bedrooms <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        placeholder="e.g., 2"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Bathrooms -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Bathrooms <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="0.5"
+                                        placeholder="e.g., 2, 2.5"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+
+                                <!-- Square Footage -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Square Footage <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        placeholder="e.g., 1200"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Financial Information -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Financial Information</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Monthly Rent -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Monthly Rent <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            step="0.01"
+                                            placeholder="1,800.00"
+                                            class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Security Deposit -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Security Deposit
+                                    </label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="text-gray-500 sm:text-sm">$</span>
+                                        </div>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            step="0.01"
+                                            placeholder="3,600.00"
+                                            class="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Amenities & Features -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Amenities & Features</h2>
+
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Balcony</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Parking</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Storage</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Dishwasher</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Washer/Dryer</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Air Conditioning</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Hardwood Floors</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Pet Friendly</span>
+                                </label>
+                                <label class="flex items-center space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                    <span class="text-sm text-gray-700">Furnished</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div class="bg-white rounded-lg border border-gray-200 p-6">
+                            <h2 class="text-lg font-semibold text-gray-900 mb-4">Additional Information</h2>
+
+                            <div class="space-y-4">
+                                <!-- Description -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        rows="4"
+                                        placeholder="Enter unit description, special features, or notes..."
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                    ></textarea>
+                                </div>
+
+                                <!-- Special Notes -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Internal Notes
+                                    </label>
+                                    <textarea
+                                        rows="3"
+                                        placeholder="Private notes for management (not visible to residents)..."
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Summary Card -->
+                        <div class="bg-gradient-to-br from-primary-50 to-blue-50 rounded-lg border border-primary-200 p-6">
+                            <h3 class="text-sm font-semibold text-primary-900 mb-3">Summary Preview</h3>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                <div>
+                                    <p class="text-gray-600">Unit</p>
+                                    <p class="font-semibold text-gray-900">—</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Type</p>
+                                    <p class="font-semibold text-gray-900">—</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Size</p>
+                                    <p class="font-semibold text-gray-900">— sq ft</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Monthly Rent</p>
+                                    <p class="font-semibold text-gray-900">$—</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                            <a href="apartments.html" class="px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                Cancel
+                            </a>
+                            <div class="flex items-center space-x-3">
+                                <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    Save as Draft
+                                </button>
+                                <button type="submit" class="px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg">
+                                    Create Apartment
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>

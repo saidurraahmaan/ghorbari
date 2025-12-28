@@ -28,7 +28,7 @@ public class AmenityBookingService implements IAmenityBookingService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_RESIDENT})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_RESIDENT})
     public void createBooking(AmenityBookingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -112,7 +112,7 @@ public class AmenityBookingService implements IAmenityBookingService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateBooking(Long id, AmenityBookingDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -188,7 +188,7 @@ public class AmenityBookingService implements IAmenityBookingService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void deleteBooking(Long id) {
         AmenityBooking booking = amenityBookingRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Booking not found"));

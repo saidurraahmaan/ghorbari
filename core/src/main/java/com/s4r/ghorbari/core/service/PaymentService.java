@@ -119,7 +119,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updatePayment(Long id, PaymentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -177,7 +177,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void deletePayment(Long id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Payment not found"));

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class ApartmentRequest {
 
     @NotBlank(message = "Apartment number is required")
-    private String apartmentNumber;
+    private String unitNumber;
 
     @NotNull(message = "Building ID is required")
     private Long buildingId;
@@ -37,12 +37,12 @@ public class ApartmentRequest {
     }
 
     // Getters and Setters
-    public String getApartmentNumber() {
-        return apartmentNumber;
+    public String getUnitNumber() {
+        return unitNumber;
     }
 
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
     }
 
     public Long getBuildingId() {

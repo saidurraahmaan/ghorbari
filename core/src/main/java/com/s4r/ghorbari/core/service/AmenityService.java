@@ -26,7 +26,7 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void createAmenity(AmenityDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -79,7 +79,7 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateAmenity(Long id, AmenityDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -96,7 +96,7 @@ public class AmenityService implements IAmenityService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void deleteAmenity(Long id) {
         Amenity amenity = amenityRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Amenity not found"));

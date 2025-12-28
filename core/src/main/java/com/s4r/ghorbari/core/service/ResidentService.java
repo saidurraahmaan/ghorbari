@@ -70,7 +70,7 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateResident(Long id, ResidentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -87,7 +87,7 @@ public class ResidentService implements IResidentService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void deleteResident(Long id) {
         Resident resident = residentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Resident not found"));

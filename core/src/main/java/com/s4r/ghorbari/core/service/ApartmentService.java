@@ -26,7 +26,7 @@ public class ApartmentService implements IApartmentService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void createApartment(ApartmentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -65,7 +65,7 @@ public class ApartmentService implements IApartmentService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void updateApartment(Long id, ApartmentDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -82,7 +82,7 @@ public class ApartmentService implements IApartmentService {
     }
 
     @Override
-    @RequiresRole(RoleName.ROLE_TENANT_ADMIN)
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN})
     public void deleteApartment(Long id) {
         Apartment apartment = apartmentRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Apartment not found"));

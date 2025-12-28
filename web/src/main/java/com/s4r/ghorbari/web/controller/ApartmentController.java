@@ -4,7 +4,6 @@ import com.s4r.ghorbari.core.domain.ApartmentDto;
 import com.s4r.ghorbari.core.entity.Apartment;
 import com.s4r.ghorbari.core.service.IApartmentService;
 import com.s4r.ghorbari.web.dto.ApartmentRequest;
-import com.s4r.ghorbari.web.exception.ErrorResponse;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -126,7 +125,7 @@ public class ApartmentController {
 
     private ApartmentDto mapToDto(ApartmentRequest request) {
         ApartmentDto dto = new ApartmentDto();
-        dto.setApartmentNumber(request.getApartmentNumber());
+        dto.setApartmentNumber(request.getUnitNumber());
         dto.setBuildingId(request.getBuildingId());
         dto.setFloor(request.getFloor());
         dto.setBedrooms(request.getBedrooms());

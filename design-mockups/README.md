@@ -98,6 +98,14 @@ Based on 8px grid system:
 - Click row to open detail modal
 - Pagination
 
+### 5a. Add Apartment Page (`add-apartment.html`)
+- Comprehensive form for adding new apartments
+- Sections: Basic Info, Unit Details, Financial Info, Amenities, Additional Info
+- Form validation (required fields marked with *)
+- Amenity checkboxes (Balcony, Parking, Storage, etc.)
+- Summary preview card
+- Save as Draft and Create buttons
+
 ### 6. Residents Page (`residents.html`)
 - Beautiful card-based layout
 - Resident avatars with initials

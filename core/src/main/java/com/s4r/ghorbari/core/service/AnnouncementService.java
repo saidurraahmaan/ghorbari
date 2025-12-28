@@ -27,7 +27,7 @@ public class AnnouncementService implements IAnnouncementService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_STAFF})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_STAFF})
     public void createAnnouncement(AnnouncementDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -94,7 +94,7 @@ public class AnnouncementService implements IAnnouncementService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_STAFF})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER, RoleName.ROLE_STAFF})
     public void updateAnnouncement(Long id, AnnouncementDto dto) {
         Long tenantId = TenantContext.getCurrentTenantId();
         if (tenantId == null) {
@@ -148,7 +148,7 @@ public class AnnouncementService implements IAnnouncementService {
     }
 
     @Override
-    @RequiresRole({RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
+    @RequiresRole({RoleName.ROLE_SUPER_ADMIN, RoleName.ROLE_TENANT_ADMIN, RoleName.ROLE_MANAGER})
     public void deleteAnnouncement(Long id) {
         Announcement announcement = announcementRepository.findById(id)
                 .orElseThrow(() -> new ServiceException(ErrorCode.RESOURCE_NOT_FOUND, "Announcement not found"));
